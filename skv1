@@ -1,0 +1,113 @@
+<?php
+
+$title = $argv[1];
+
+if ($title == false) {
+	echo "Could not get value of command line option\n";exit;
+}
+
+$word = 'migrate:';
+// print "$title\n";
+
+if (!preg_match("/\b{$word}\b/", $title)) {    
+    echo "Please enter a correct command line!\n";exit;
+}
+    
+$newDir = str_replace('migrate:', '',$title);
+
+$output = "output/";
+
+// current dir
+$curDir = getcwd();
+
+// full dir
+$fullDir = $curDir.'/'.$output.'/'.$newDir;
+
+// check if the dir already exist
+if (!is_dir($fullDir))
+{
+    // create new folder in this dir with writeable permission (chmod 0777).
+    if (mkdir($fullDir, 0777, true))
+    {
+        // echo "-- The {$newDir} directory has been created successfully...".PHP_EOL;
+        echo "-- Created Migration Directory: {$newDir}". PHP_EOL;
+    } else {
+        echo "Fail to create {$newDir} directory...".PHP_EOL;
+    }    
+} else {
+    echo "-- directory {$newDir} already exist." . PHP_EOL;
+    echo "-- deleting all files in {$newDir} directory." . PHP_EOL;
+    
+    // delete all file in the dir
+    $files = glob($fullDir. DIRECTORY_SEPARATOR .'*'); // get all file names
+   
+    foreach($files as $file) { // iterate files
+        if(is_file($file)) {
+            unlink($file); // delete file
+        }
+    }    
+    echo "-- successfully deleting all files in {$newDir} directory" . PHP_EOL;
+    
+    // delete the dir
+    echo "-- deleting the {$newDir} directory". PHP_EOL;
+    rmdir($fullDir);
+    echo "-- successfully deleting the {$newDir} directory". PHP_EOL;
+
+    echo "-- Creating Migration Directory: {$newDir}". PHP_EOL;
+    // echo "-- Created Migration Directory: {$newDir}". PHP_EOL;
+        
+    // create new dir
+    if (mkdir($fullDir, 0777, true))
+    {
+        // echo "-- {$newDir} directory has been created successfully...". PHP_EOL;
+        echo "-- Created Migration Directory: {$newDir}". PHP_EOL;
+    } else {
+        echo "-- Fail to create {$newDir} directory...". PHP_EOL;
+    }
+}
+
+// start creating the .csv file
+
+$input = $curDir.'/input/data.txt';
+// read the data row in .txt file 
+// put it in array separated by coma
+$lines = [];
+
+// if (( $txtfile = fopen('data.txt', 'r') )  !== false )
+
+if (file_exists($input)) {
+    if (( $txtfile = fopen($input, 'r') )  !== false )
+    {
+        while ( ($data = fgetcsv($txtfile, 1000, ",")) !== false ) 
+        {
+            $lines[] = $data;
+        }
+    }    
+} else {
+    echo "-- Fail to create {$newDir} file...". PHP_EOL;exit;
+}
+fclose($txtfile);
+
+
+// $csvfile = fopen('file4.csv', 'w');
+
+// start write to the csv file
+$headers = ["codea", "codeb", "stu_code", "name"];
+
+$csvName = "file.csv";
+// $fileHandle = fopen($csvName, 'w') or die('Can\'t create .csv file, try again later.');
+
+// write the array in .csv file row by rows
+$csvfile = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w') or die('Can\'t create .csv file, try again later.');
+
+echo "-- Creating Migration File: {$csvName}". PHP_EOL;
+
+//Add the headers
+fputcsv($csvfile, $headers);
+
+foreach ($lines as $line) {
+    fputcsv($csvfile, $line);
+}
+fclose($csvfile);
+// echo "-- {$csvName} file has been migrated successfully...". PHP_EOL;
+echo "-- Created Migration File: {$csvName}". PHP_EOL;
