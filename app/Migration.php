@@ -17,7 +17,7 @@ class Migration
      * @return void
      */
     public function __construct() {
-        $this->name = 'name';
+        $this->name = 'ZUCK';
         // excess static props
         // self::$counter++;
     }
@@ -27,7 +27,7 @@ class Migration
      *
      * @return void
      */
-    public static function start( string $type )
+    public function start( string $type )
     { 
 
         echo $result = ( preg_match( "/\PMR:\b/", $type ) ) ? self::startPmr( $type ) : self::startSpm( $type );
@@ -49,7 +49,7 @@ class Migration
      *
      * @return string
      */
-    public static function startSpm( string $type ):string
+    public function startSpm( string $type ):string
     {
         return "start {$type}";
     }
