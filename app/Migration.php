@@ -23,19 +23,31 @@ class Migration
     }
 
     /**
-     * @param string $type PMR or SPM
+     * @param string $type PMR or STAM
      *
-     * @return void
+     * @return string
      */
     public function start( string $type )
     { 
 
-        echo $result = ( preg_match( "/\PMR:\b/", $type ) ) ? self::startPmr( $type ) : self::startSpm( $type );
+        switch ( substr( $type,0,3 ) )
+        {
+            case 'PMR':
+                $result = $this->startPmr( $type );
+                break;
+            case 'STA':
+                $result = $this->startStam( $type );
+                break;
+            default:
+                $result = "Please enter a correct command line!\n";
+        }
+
+        echo $result;
 
     }
 
     /**
-     * @param mixed string $type PMR or SPM
+     * @param mixed string $type PMR or SPAM
      *
      * @return string
      */
@@ -45,11 +57,11 @@ class Migration
     }
 
     /**
-     * @param mixed string $type PMR or SPM
+     * @param mixed string $type PMR or SPAM
      *
      * @return string
      */
-    public function startSpm( string $type ):string
+    public function startStam( string $type ):string
     {
         return "start {$type}";
     }
