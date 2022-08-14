@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Herwan <mdherwan@gmail.com>
  * @link -
@@ -9,34 +10,38 @@ declare(strict_types = 1);
 class Migration
 {
     // props
-    public string $name;
+    public string $title;
+    public object $mkdirMigrate;
 
     /**
      * @param mixed
      *
      * @return void
      */
-    public function __construct() {
-        $this->name = 'ZUCK';
-        // excess static props
-        // self::$counter++;
+    public function __construct( string $title , MkdirMigrate $mkdirMigrate)
+    {
+        $this->title = $title;
+        $this->mkdirMigrate = $mkdirMigrate;
+
+        // $this->mkdirMigrate = new MkdirMigrate(  $this->fullDir, $this->newDir );
+        
     }
 
     /**
-     * @param string $type PMR or STAM
+     * @param
      *
      * @return string
      */
-    public function start( string $type )
+    public function start()
     { 
 
-        switch ( substr( $type,0,3 ) )
+        switch ( substr( $this->title, 0, 3 ) )
         {
             case 'PMR':
-                $result = $this->startPmr( $type );
+                $result = $this->startPmr();
                 break;
             case 'STA':
-                $result = $this->startStam( $type );
+                $result = $this->startStam();
                 break;
             default:
                 $result = "Please enter a correct command line!\n";
@@ -47,23 +52,27 @@ class Migration
     }
 
     /**
-     * @param mixed string $type PMR or SPAM
+     * @param string $title PMR or STAM
      *
      * @return string
      */
-    public function startPmr( string $type ):string
+    public function startPmr(): string
     {
-        return "start {$type}{$this->name}";
+        // make migration dir
+        $result = $this->mkdirMigrate->create( $this->title );
+        return $result;
     }
 
     /**
-     * @param mixed string $type PMR or SPAM
+     * @param mixed string $title PMR or SPAM
      *
      * @return string
      */
-    public function startStam( string $type ):string
+    public function startStam(): string
     {
-        return "start {$type}";
+        // make migration dir
+        $result = $this->mkdirMigrate->create( $this->title );
+        return $result;
     }
 
 }

@@ -1,19 +1,29 @@
 <?php
+
 /**
  * @author Herwan <mdherwan@gmail.com>
  * @link -
  */
 
-declare(strict_types = 1);
-error_reporting (E_ALL ^ E_NOTICE);
+declare( strict_types = 1 );
+error_reporting( E_ALL ^ E_NOTICE );
 
 $root = __DIR__ . DIRECTORY_SEPARATOR;
-define('APP_PATH', $root . 'app' . DIRECTORY_SEPARATOR);
+define( 'APP_PATH', $root . 'app' . DIRECTORY_SEPARATOR );
+define( 'INPUT_PATH', $root . 'input' . DIRECTORY_SEPARATOR );
+define( 'OUTPUT_PATH', $root . 'output' . DIRECTORY_SEPARATOR );
+
 require APP_PATH . "Migration.php";
+require APP_PATH . "MkdirMigrate.php";
+
+$input = INPUT_PATH . "PMR1998a.txt";
 
 $cli = $argv[1] ?? die( "Could not get value of command line option!\n" );
 $check = preg_match( "/\bmigrate:\b/", $cli ) ?: die( "Please enter a correct command line!\n" ); 
 $title = str_replace( 'migrate:', '', $cli );
 
-$migration = new Migration();
-$migration->start($title);
+$mkdirMigrate = new MkdirMigrate();
+$migration = new Migration( $title, $mkdirMigrate );
+$migration->start();
+
+
