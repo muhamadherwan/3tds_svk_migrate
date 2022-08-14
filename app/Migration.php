@@ -59,7 +59,7 @@ class Migration
     public function startPmr(): string
     {
         // make migration dir
-        $result = $this->mkdirMigrate->create( $this->title );
+        $result = $this->mkdirMigrate->start();
         return $result;
     }
 
@@ -71,7 +71,7 @@ class Migration
     public function startStam(): string
     {
         // make migration dir
-        $result = $this->mkdirMigrate->create( $this->title );
+        $result = $this->mkdirMigrate->start();
         return $result;
     }
 
