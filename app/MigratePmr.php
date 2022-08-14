@@ -31,6 +31,7 @@ class MigratePmr
         $result = '';
         $result .= $this->migratePmrGvsSchools( $input, $fullDir, $newDir );
         $result .= $this->migratePmrStudents( $input, $fullDir, $newDir );
+        $result .= $this->migratePmrSubjects( $input, $fullDir, $newDir );
 
         return $result;
     }
@@ -90,8 +91,8 @@ class MigratePmr
             $csvfile = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w');
 
             // write the columns
-            $headers = ["sch_ID", "sch_Name", "sch_PhoneNo", "sch_Email", "sch_Address", "sch_Code", "sch_Year", "sch_Status"];
-            fputcsv($csvfile, $headers);
+            $columns = ["sch_ID", "sch_Name", "sch_PhoneNo", "sch_Email", "sch_Address", "sch_Code", "sch_Year", "sch_Status"];
+            fputcsv($csvfile, $columns);
 
             // write the rows
             foreach ($rows as $row) 
@@ -162,8 +163,8 @@ class MigratePmr
             $csvfile = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w');
 
             // write the columns
-            $headers = ["Stu_ID", "Stu_Idx", "Stu_Name", "Stu_Mykad", "Sch_ID"];
-            fputcsv($csvfile, $headers);
+            $columns = ["Stu_ID", "Stu_Idx", "Stu_Name", "Stu_Mykad", "Sch_ID"];
+            fputcsv($csvfile, $columns);
 
             // write the rows
             foreach ($rows as $row) 
@@ -180,6 +181,103 @@ class MigratePmr
         }
 
         return $result;
+    }
 
+    /**
+     * @param string $input, $fullDir, $newDir 
+     *
+     * @return string result
+     */
+    public function migratePmrSubjects( $input, $fullDir, $newDir )
+    {
+        $result = '';
+        $rows = [];
+
+        # read .txt files #
+        if ( file_exists( $input ) ) {
+            if (( $txtfile = fopen($input, 'r') )  !== false )
+            {
+                while ( ($data = fgetcsv($txtfile, 1000, ",")) !== false ) 
+                {
+                    // convert to string
+                    $str = implode(" ", $data);
+
+                    // get the school code in the string:
+                    // $schoolCode = substr($str,123,7);
+                    $schoolCode = trim(substr($str,122,8));
+
+                    // check if current row have school code.
+                    // if none, continue loop, else get the subject code and save in new array set.
+                    if ( strlen( $schoolCode ) !== 7 ) 
+                    {
+                        // for test with datafile
+                        $data2 = [];
+                        $data2['sub_code1'] = trim( substr( $str,96,4 ));
+                        $data2['sub_code2'] = trim( substr( $str,100,4 ));
+                        $data2['sub_code3'] = trim( substr( $str,109,4 ));
+                        $data2['sub_code4'] = trim( substr( $str,118,4 ));
+                        $data2['sub_code5'] = trim( substr( $str,127,4 ));
+                        $data2['sub_code6'] = trim( substr( $str,136,4 ));
+                        $data2['sub_code7'] = trim( substr( $str,145,4 ));
+                        $data2['sub_code8'] = trim( substr( $str,154,4 ));
+                        $data2['sub_code9'] = trim( substr( $str,163,4 ));
+                        $data2['sub_code10'] = trim( substr( $str,172,4 ));
+                        break;
+                    } else {
+                        continue;
+                    } 
+                }
+
+                // set the subject rows with its subject code.
+                $rows = [];
+                $subject1 = ['', $data2['sub_code1'], 'MATA01'];
+                $subject2 = ['', $data2['sub_code2'], 'MATA02'];
+                $subject3 = ['', $data2['sub_code3'], 'MATA03'];
+                $subject4 = ['', $data2['sub_code4'], 'MATA04'];
+                $subject5 = ['', $data2['sub_code5'], 'MATA05'];
+                $subject6 = ['', $data2['sub_code6'], 'MATA06'];
+                $subject7 = ['', $data2['sub_code7'], 'MATA07'];
+                $subject8 = ['', $data2['sub_code8'], 'MATA08'];
+                $subject9 = ['', $data2['sub_code9'], 'MATA08'];
+                $subject10 = ['', $data2['sub_code10'], 'MATA10'];
+               
+                array_push( $rows,
+                     $subject1, $subject2, $subject3, $subject4, $subject5,
+                     $subject6, $subject7, $subject8, $subject9, $subject10
+                );
+
+            }    
+        } else {
+            $result .= "-- Fail to create {$newDir} file...". PHP_EOL; exit;
+        }
+        fclose($txtfile);
+
+        // var_dump($rows); exit;
+
+        # write Subjects.csv #
+        $csvName = $newDir."_Subjects.csv";
+        if ( $open = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w') !== false )
+        {
+            $csvfile = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w');
+
+            // write the columns
+            $columns = ["Sub_ID", "Sub_Code", "Sub_Name"];
+            fputcsv($csvfile, $columns);
+
+            // write the rows
+            foreach ($rows as $row) 
+            {
+                fputcsv($csvfile, $row);
+            }
+            fclose($csvfile);
+
+            $result .= "-- Creating Migration File: {$csvName}". PHP_EOL;
+            $result .= "-- Created Migration File: {$csvName}". PHP_EOL;
+        } else {
+            $result .= "-- Creating Migration File: {$csvName}". PHP_EOL;
+            $result .= "-- Fail Create Migration File: {$csvName}. Try again later.". PHP_EOL;
+        }
+
+        return $result;
     }
 }
