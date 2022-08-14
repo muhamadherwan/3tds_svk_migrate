@@ -11,20 +11,25 @@ class Migration
 {
     // props
     public string $title;
+    public string $input;
     public object $mkdirMigrate;
+    public object $migratePmr;
+    public string $newDir;
+    public string $fullDir;
 
     /**
      * @param mixed
      *
      * @return void
      */
-    public function __construct( string $title , MkdirMigrate $mkdirMigrate)
+    public function __construct( string $title , string $input, MkdirMigrate $mkdirMigrate, MigratePmr $migratePmr )
     {
         $this->title = $title;
+        $this->input = $input;
         $this->mkdirMigrate = $mkdirMigrate;
-
-        // $this->mkdirMigrate = new MkdirMigrate(  $this->fullDir, $this->newDir );
-        
+        $this->migratePmr = $migratePmr;
+        $this->newDir = str_replace( 'migrate:', '', $title );
+        $this->fullDir = OUTPUT_PATH . $this->newDir;
     }
 
     /**
@@ -60,6 +65,8 @@ class Migration
     {
         // make migration dir
         $result = $this->mkdirMigrate->start();
+        // make migration csv files
+        $result .= $this->migratePmr->create( $this->input, $this->fullDir, $this->newDir );
         return $result;
     }
 
