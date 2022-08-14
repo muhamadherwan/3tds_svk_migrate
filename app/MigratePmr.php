@@ -29,7 +29,9 @@ class MigratePmr
     public function create( $input, $fullDir, $newDir )
     {
         $result = '';
-        $result .= $this->migratePmrGvsSchool( $input, $fullDir, $newDir );
+        $result .= $this->migratePmrGvsSchools( $input, $fullDir, $newDir );
+        $result .= $this->migratePmrStudents( $input, $fullDir, $newDir );
+
         return $result;
     }
 
@@ -38,7 +40,7 @@ class MigratePmr
      *
      * @return string result
      */
-    public function migratePmrGvsSchool( $input, $fullDir, $newDir )
+    public function migratePmrGvsSchools( $input, $fullDir, $newDir )
     {
         $result = '';
         $rows = [];
@@ -87,7 +89,7 @@ class MigratePmr
         {
             $csvfile = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w');
 
-            // write the headers
+            // write the columns
             $headers = ["sch_ID", "sch_Name", "sch_PhoneNo", "sch_Email", "sch_Address", "sch_Code", "sch_Year", "sch_Status"];
             fputcsv($csvfile, $headers);
 
@@ -106,5 +108,78 @@ class MigratePmr
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $input, $fullDir, $newDir 
+     *
+     * @return string result
+     */
+    public function migratePmrStudents( $input, $fullDir, $newDir )
+    {
+        $result = '';
+        $rows = [];
+
+        # read .txt files #
+        if ( file_exists( $input ) ) {
+            if (( $txtfile = fopen($input, 'r') )  !== false )
+            {
+                while ( ($data = fgetcsv($txtfile, 1000, ",")) !== false ) 
+                {
+                    // convert to string
+                    $str = implode(" ", $data);
+
+                    // get the school code in the string:
+                    // $schoolCode = substr($str,123,7);
+                    $schoolCode = trim(substr($str,122,8));
+
+                    // check if current row have school code.
+                    // if none, continue loop, else get the required data and save in new array set.
+                    if ( strlen( $schoolCode ) !== 7 ) 
+                    {
+                        $data2 = [];
+                        $data2['Stu_ID'] = (int)trim( substr( $str,56,12 ));
+                        $data2['Stu_Idx'] = trim( substr( $str,6,9 ));
+                        $data2['Stu_Name'] = trim( substr( $str,16,40 ));
+                        $data2['Stu_Mykad'] = (int)trim( substr( $str,56,12 )); 
+                        $data2['Sch_ID'] = '';
+
+                        $rows[] = $data2;
+                    } else {
+                        continue;
+                    }           
+                }
+            }    
+        } else {
+            $result .= "-- Fail to create {$newDir} file...". PHP_EOL; exit;
+        }
+        fclose($txtfile);
+
+        # write Students.csv #
+        $csvName = $newDir."_Students.csv";
+        if ( $open = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w') !== false )
+        {
+            $csvfile = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w');
+
+            // write the columns
+            $headers = ["Stu_ID", "Stu_Idx", "Stu_Name", "Stu_Mykad", "Sch_ID"];
+            fputcsv($csvfile, $headers);
+
+            // write the rows
+            foreach ($rows as $row) 
+            {
+                fputcsv($csvfile, $row);
+            }
+            fclose($csvfile);
+
+            $result .= "-- Creating Migration File: {$csvName}". PHP_EOL;
+            $result .= "-- Created Migration File: {$csvName}". PHP_EOL;
+        } else {
+            $result .= "-- Creating Migration File: {$csvName}". PHP_EOL;
+            $result .= "-- Fail Create Migration File: {$csvName}. Try again later.". PHP_EOL;
+        }
+
+        return $result;
+
     }
 }
