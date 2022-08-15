@@ -30,7 +30,7 @@ class MigrateStam
     {
         $result = '';
         $result .= $this->migrateStamGvsSchools( $input, $fullDir, $newDir );
-        $result .= $this->migrateStamStudents( $input, $fullDir, $newDir );
+        // $result .= $this->migrateStamStudents( $input, $fullDir, $newDir );
         // $result .= $this->migrateStamSubjects( $input, $fullDir, $newDir );
         // $result .= $this->migrateStamGrades( $input, $fullDir, $newDir );
 
@@ -51,13 +51,14 @@ class MigrateStam
         if ( file_exists( $input ) ) {
             if (( $txtfile = fopen($input, 'r') )  !== false )
             {
+                $id = 1;
                 while ( ($data = fgetcsv($txtfile, 1000, ",")) !== false ) 
                 {
                     // convert to string
                     $str = implode(" ", $data);
 
                     // get the school code in the string:
-                    $schoolCode = trim(substr($str,196,7));
+                    $schoolCode = trim(substr($str,195,7));
                     // var_dump($schoolCode);exit;
 
                     // check if current row have school code.
@@ -67,11 +68,11 @@ class MigrateStam
                         continue;
                     } else {
                         $data2 = [];
-                        $data2['sch_ID'] = '';
+                        $data2['sch_ID'] = $id++;
                         $data2['sch_Name'] = trim(substr($str,12,60));
-                        $data2['sch_PhoneNo'] = '';
+                        $data2['sch_PhoneNo'] = trim(substr($str,179,16));
                         $data2['sch_Email'] = '';
-                        $data2['sch_Address'] = '';
+                        $data2['sch_Address'] = trim(substr($str,72,60));
                         $data2['sch_Code'] = $schoolCode;
                         $data2['sch_Year'] = '';
                         $data2['sch_Status'] = '';
@@ -79,7 +80,7 @@ class MigrateStam
                         $rows[] = $data2;
                     }           
                 }
-            }    
+            }
         } else {
             $result .= "-- Fail to create {$newDir} file...". PHP_EOL; exit;
         }
@@ -110,7 +111,6 @@ class MigrateStam
         }
 
         return $result;
-    
     }
 
     /**
