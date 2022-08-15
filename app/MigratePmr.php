@@ -29,11 +29,10 @@ class MigratePmr
     public function create( $input, $fullDir, $newDir )
     {
         $result = '';
-        // $result .= $this->migratePmrGvsSchools( $input, $fullDir, $newDir );
-
+        $result .= $this->migratePmrGvsSchools( $input, $fullDir, $newDir );
         // $result .= $this->migratePmrStudents( $input, $fullDir, $newDir );
         $result .= $this->migratePmrSubjects( $input, $fullDir, $newDir );
-        // $result .= $this->migratePmrGrades( $input, $fullDir, $newDir );
+        $result .= $this->migratePmrGrades( $input, $fullDir, $newDir );
 
         return $result;
     }
