@@ -29,11 +29,11 @@ class MigratePmr
     public function create( $input, $fullDir, $newDir )
     {
         $result = '';
-        $result .= $this->migratePmrGvsSchools( $input, $fullDir, $newDir );
+        // $result .= $this->migratePmrGvsSchools( $input, $fullDir, $newDir );
 
         // $result .= $this->migratePmrStudents( $input, $fullDir, $newDir );
-        // $result .= $this->migratePmrSubjects( $input, $fullDir, $newDir );
-        $result .= $this->migratePmrGrades( $input, $fullDir, $newDir );
+        $result .= $this->migratePmrSubjects( $input, $fullDir, $newDir );
+        // $result .= $this->migratePmrGrades( $input, $fullDir, $newDir );
 
         return $result;
     }
@@ -206,7 +206,6 @@ class MigratePmr
                     $str = implode(" ", $data);
 
                     // get the school code in the string:
-                    // $schoolCode = substr($str,123,7);
                     $schoolCode = trim(substr($str,122,8));
 
                     // check if current row have school code.
@@ -215,16 +214,15 @@ class MigratePmr
                     {
                         // for test with datafile
                         $data2 = [];
-                        $data2['sub_code1'] = trim( substr( $str,96,4 ));
-                        $data2['sub_code2'] = trim( substr( $str,100,4 ));
-                        $data2['sub_code3'] = trim( substr( $str,109,4 ));
-                        $data2['sub_code4'] = trim( substr( $str,118,4 ));
-                        $data2['sub_code5'] = trim( substr( $str,127,4 ));
-                        $data2['sub_code6'] = trim( substr( $str,136,4 ));
-                        $data2['sub_code7'] = trim( substr( $str,145,4 ));
-                        $data2['sub_code8'] = trim( substr( $str,154,4 ));
-                        $data2['sub_code9'] = trim( substr( $str,163,4 ));
-                        $data2['sub_code10'] = trim( substr( $str,172,4 ));
+                        $data2['sub_code1'] = trim( substr( $str,100,2 ));
+                        $data2['sub_code2'] = trim( substr( $str,109,2 ));
+                        $data2['sub_code3'] = trim( substr( $str,118,2 ));
+                        $data2['sub_code4'] = trim( substr( $str,127,2 ));
+                        $data2['sub_code5'] = trim( substr( $str,136,2 ));
+                        $data2['sub_code6'] = trim( substr( $str,145,2 ));
+                        $data2['sub_code7'] = trim( substr( $str,154,2 ));
+                        $data2['sub_code8'] = trim( substr( $str,163,2 ));
+                        $data2['sub_code9'] = trim( substr( $str,172,2 ));
                         break;
                     } else {
                         continue;
@@ -233,23 +231,23 @@ class MigratePmr
 
                 // set the subject rows with its subject code.
                 $rows = [];
-                $subject1 = ['', $data2['sub_code1'], 'MATA01'];
-                $subject2 = ['', $data2['sub_code2'], 'MATA02'];
-                $subject3 = ['', $data2['sub_code3'], 'MATA03'];
-                $subject4 = ['', $data2['sub_code4'], 'MATA04'];
-                $subject5 = ['', $data2['sub_code5'], 'MATA05'];
-                $subject6 = ['', $data2['sub_code6'], 'MATA06'];
-                $subject7 = ['', $data2['sub_code7'], 'MATA07'];
-                $subject8 = ['', $data2['sub_code8'], 'MATA08'];
-                $subject9 = ['', $data2['sub_code9'], 'MATA08'];
-                $subject10 = ['', $data2['sub_code10'], 'MATA10'];
+                $subject1 = [1, $data2['sub_code1'], 'MATA01'];
+                $subject2 = [2, $data2['sub_code2'], 'MATA02'];
+                $subject3 = [3, $data2['sub_code3'], 'MATA03'];
+                $subject4 = [4, $data2['sub_code4'], 'MATA04'];
+                $subject5 = [5, $data2['sub_code5'], 'MATA05'];
+                $subject6 = [6, $data2['sub_code6'], 'MATA06'];
+                $subject7 = [7, $data2['sub_code7'], 'MATA07'];
+                $subject8 = [8, $data2['sub_code8'], 'MATA08'];
+                $subject9 = [9, $data2['sub_code9'], 'MATA09'];
                
                 array_push( $rows,
                      $subject1, $subject2, $subject3, $subject4, $subject5,
-                     $subject6, $subject7, $subject8, $subject9, $subject10
+                     $subject6, $subject7, $subject8, $subject9
                 );
 
-            }    
+            }   
+
         } else {
             $result .= "-- Fail to create {$newDir} file...". PHP_EOL; exit;
         }
@@ -265,8 +263,9 @@ class MigratePmr
             $columns = ["Sub_ID", "Sub_Code", "Sub_Name"];
             fputcsv($csvfile, $columns);
 
+            // print_r($rows); exit;
             // write the rows
-            foreach ($rows as $row) 
+            foreach($rows as $row) 
             {
                 fputcsv($csvfile, $row);
             }
@@ -282,7 +281,7 @@ class MigratePmr
         return $result;
     }
 
-        /**
+    /**
      * @param string $input, $fullDir, $newDir 
      *
      * @return string result
