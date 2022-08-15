@@ -16,8 +16,10 @@ define( 'OUTPUT_PATH', $root . 'output' . DIRECTORY_SEPARATOR );
 require APP_PATH . "Migration.php";
 require APP_PATH . "MkdirMigrate.php";
 require APP_PATH . "MigratePmr.php";
+require APP_PATH . "MigrateStam.php";
 
 $input = INPUT_PATH . "PMR1998a.txt";
+// $input = INPUT_PATH . "STAM2004.txt";
 
 $cli = $argv[1] ?? die( "Could not get value of command line option!\n" );
 $check = preg_match( "/\bmigrate:\b/", $cli ) ?: die( "Please enter a correct command line!\n" ); 
@@ -25,7 +27,8 @@ $title = str_replace( 'migrate:', '', $cli );
 
 $mkdirMigrate = new MkdirMigrate( $title );
 $migratePmr = new MigratePmr();
-$migration = new Migration( $title, $input, $mkdirMigrate, $migratePmr );
+$migrateStam = new MigrateStam();
+$migration = new Migration( $title, $input, $mkdirMigrate, $migratePmr, $migrateStam );
 $migration->start();
 
 

@@ -32,6 +32,7 @@ class MigratePmr
         $result .= $this->migratePmrGvsSchools( $input, $fullDir, $newDir );
         $result .= $this->migratePmrStudents( $input, $fullDir, $newDir );
         $result .= $this->migratePmrSubjects( $input, $fullDir, $newDir );
+        $result .= $this->migratePmrGrades( $input, $fullDir, $newDir );
 
         return $result;
     }
@@ -191,7 +192,6 @@ class MigratePmr
     public function migratePmrSubjects( $input, $fullDir, $newDir )
     {
         $result = '';
-        $rows = [];
 
         # read .txt files #
         if ( file_exists( $input ) ) {
@@ -252,8 +252,6 @@ class MigratePmr
         }
         fclose($txtfile);
 
-        // var_dump($rows); exit;
-
         # write Subjects.csv #
         $csvName = $newDir."_Subjects.csv";
         if ( $open = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w') !== false )
@@ -262,6 +260,60 @@ class MigratePmr
 
             // write the columns
             $columns = ["Sub_ID", "Sub_Code", "Sub_Name"];
+            fputcsv($csvfile, $columns);
+
+            // write the rows
+            foreach ($rows as $row) 
+            {
+                fputcsv($csvfile, $row);
+            }
+            fclose($csvfile);
+
+            $result .= "-- Creating Migration File: {$csvName}". PHP_EOL;
+            $result .= "-- Created Migration File: {$csvName}". PHP_EOL;
+        } else {
+            $result .= "-- Creating Migration File: {$csvName}". PHP_EOL;
+            $result .= "-- Fail Create Migration File: {$csvName}. Try again later.". PHP_EOL;
+        }
+
+        return $result;
+    }
+
+        /**
+     * @param string $input, $fullDir, $newDir 
+     *
+     * @return string result
+     */
+    public function migratePmrGrades( $input, $fullDir, $newDir )
+    {
+        $result = '';
+
+        // set the grade rows with its subject code.
+        $rows = [];
+        $gred1 = ['', 'GRED01'];
+        $gred2 = ['', 'GRED02'];
+        $gred3 = ['', 'GRED03'];
+        $gred4 = ['', 'GRED04'];
+        $gred5 = ['', 'GRED05'];
+        $gred6 = ['', 'GRED06'];
+        $gred7 = ['', 'GRED07'];
+        $gred8 = ['', 'GRED08'];
+        $gred9 = ['', 'GRED09'];
+        $gred10 = ['', 'GRED010'];
+        
+        array_push( $rows,
+                $gred1, $gred2, $gred3, $gred4, $gred5,
+                $gred6, $gred7, $gred8, $gred9, $gred10
+        );
+
+        # write Grades.csv #
+        $csvName = $newDir."_Grades.csv";
+        if ( $open = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w') !== false )
+        {
+            $csvfile = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w');
+
+            // write the columns
+            $columns = ["Grade_ID", "Grade"];
             fputcsv($csvfile, $columns);
 
             // write the rows
