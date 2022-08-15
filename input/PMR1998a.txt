@@ -9,5 +9,4 @@ BN 21 AA001K005 BAYSAMUDDIN BIN MAHMOOD                 831213055253131283111   
 BN 11 AA003K   SMK TEST TEST3 TAPAH PERAK                                                                                  AEA0036                                                                                                  98
 BN 21 AA001K006 EIRUL SYAMAR BIN AHMAD SAPIAN           831103045519031183111                   09  02C      12C      21B1     23B2     31D      45B1     50C      55D      76B2                     L              18000006         98
 BN 21 AA001K006 EIRUL SYAMAR BIN AHMAD SAPIAN           831103045519031183111                   09  02C      12C      21B1     23B2     31D      45B1     50C      55D      76B2                     L              18000006         98
-
-BN 11 AA003K   SMK TEST TEST4 TAPAU PERAK                                                                                  AEA0037                                                                                                  98
+BN 11 AA003K   SMK TEST TEST4 TAPAH PERAK                                                                                  AEA0037                                                                                                  98
