@@ -29,10 +29,10 @@ class MigrateStam
     public function create( $input, $fullDir, $newDir )
     {
         $result = '';
-        $result .= $this->migrateStamGvsSchools( $input, $fullDir, $newDir );
+        // $result .= $this->migrateStamGvsSchools( $input, $fullDir, $newDir );
         // $result .= $this->migrateStamStudents( $input, $fullDir, $newDir );
-        $result .= $this->migrateStamSubjects( $input, $fullDir, $newDir );
-        // $result .= $this->migrateStamGrades( $input, $fullDir, $newDir );
+        // $result .= $this->migrateStamSubjects( $input, $fullDir, $newDir );
+        $result .= $this->migrateStamGrades( $input, $fullDir, $newDir );
 
         return $result;
     }
@@ -215,6 +215,56 @@ class MigrateStam
 
         # write Subjects.csv #
         $csvName = $newDir."_Subjects.csv";
+        if ( $open = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w') !== false )
+        {
+            $csvfile = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w');
+
+            // write the columns
+            $columns = ["Sub_ID", "Sub_Code", "Sub_Name"];
+            fputcsv($csvfile, $columns);
+            
+            // write the rows
+            foreach($rows as $row) 
+            {
+                fputcsv($csvfile, $row);
+            }
+            fclose($csvfile);
+
+            $result .= "-- Creating Migration File: {$csvName}". PHP_EOL;
+            $result .= "-- Created Migration File: {$csvName}". PHP_EOL;
+        } else {
+            $result .= "-- Creating Migration File: {$csvName}". PHP_EOL;
+            $result .= "-- Fail Create Migration File: {$csvName}. Try again later.". PHP_EOL;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param string $input, $fullDir, $newDir 
+     *
+     * @return string result
+     */
+    public function migrateStamGrades( $input, $fullDir, $newDir )
+    {
+        $result = '';
+
+       // set the grade rows with its subject code.
+       $rows = [];
+       $subject1 = [1, '1', 'MUMTAZ'];
+       $subject2 = [2, '2', 'JAYYID JIDDAN'];
+       $subject3 = [3, '3', 'JAYYID'];
+       $subject4 = [4, '4', 'MAQBUL'];
+       $subject5 = [5, '5', 'RASIB'];
+       $subject6 = [6, 'T', 'TIDAK HADIR'];
+
+       array_push( $rows,
+            $subject1, $subject2, $subject3,
+            $subject4, $subject5, $subject6 
+       );
+
+        # write Subjects.csv #
+        $csvName = $newDir."_Grades.csv";
         if ( $open = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w') !== false )
         {
             $csvfile = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w');
