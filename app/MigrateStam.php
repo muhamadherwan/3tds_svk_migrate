@@ -29,9 +29,9 @@ class MigrateStam
     public function create( $input, $fullDir, $newDir )
     {
         $result = '';
-        // $result .= $this->migrateStamGvsSchools( $input, $fullDir, $newDir );
+        $result .= $this->migrateStamGvsSchools( $input, $fullDir, $newDir );
         // $result .= $this->migrateStamStudents( $input, $fullDir, $newDir );
-        // $result .= $this->migrateStamSubjects( $input, $fullDir, $newDir );
+        $result .= $this->migrateStamSubjects( $input, $fullDir, $newDir );
         $result .= $this->migrateStamGrades( $input, $fullDir, $newDir );
 
         return $result;
