@@ -29,9 +29,9 @@ class MigrateStam
     public function create( $input, $fullDir, $newDir )
     {
         $result = '';
-        $result .= $this->migrateStamGvsSchools( $input, $fullDir, $newDir );
+        // $result .= $this->migrateStamGvsSchools( $input, $fullDir, $newDir );
         // $result .= $this->migrateStamStudents( $input, $fullDir, $newDir );
-        // $result .= $this->migrateStamSubjects( $input, $fullDir, $newDir );
+        $result .= $this->migrateStamSubjects( $input, $fullDir, $newDir );
         // $result .= $this->migrateStamGrades( $input, $fullDir, $newDir );
 
         return $result;
@@ -171,6 +171,60 @@ class MigrateStam
 
             // write the rows
             foreach ($rows as $row) 
+            {
+                fputcsv($csvfile, $row);
+            }
+            fclose($csvfile);
+
+            $result .= "-- Creating Migration File: {$csvName}". PHP_EOL;
+            $result .= "-- Created Migration File: {$csvName}". PHP_EOL;
+        } else {
+            $result .= "-- Creating Migration File: {$csvName}". PHP_EOL;
+            $result .= "-- Fail Create Migration File: {$csvName}. Try again later.". PHP_EOL;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param string $input, $fullDir, $newDir 
+     *
+     * @return string result
+     */
+    public function migrateStamSubjects( $input, $fullDir, $newDir )
+    {
+        $result = '';
+
+       // set the subject rows with its subject code.
+       $rows = [];
+       $subject1 = [1, '101', 'HIFZ AL-QURAN DAN TAJWID'];
+       $subject2 = [2, '102', 'FIQH'];
+       $subject3 = [3, '103', 'TAUHID DAN MANTIQ'];
+       $subject4 = [4, '104', 'TAFSIR DAN ULUMUHU'];
+       $subject5 = [5, '105', 'HADITH DAN MUSTOLAH'];
+       $subject6 = [6, '106', 'NAHU DAN SARF'];
+       $subject7 = [7, '107', 'INSYA\' DAN MUTALAAH'];
+       $subject8 = [8, '108', 'ADAB DAN NUSUS'];
+       $subject9 = [9, '109', '\'ARUDH DAN QAFIYAH'];
+       $subject10 = [10, '110', 'BALAGHAH'];
+
+       array_push( $rows,
+            $subject1, $subject2, $subject3, $subject4, $subject5,
+            $subject6, $subject7, $subject8, $subject9, $subject10
+       );
+
+        # write Subjects.csv #
+        $csvName = $newDir."_Subjects.csv";
+        if ( $open = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w') !== false )
+        {
+            $csvfile = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w');
+
+            // write the columns
+            $columns = ["Sub_ID", "Sub_Code", "Sub_Name"];
+            fputcsv($csvfile, $columns);
+            
+            // write the rows
+            foreach($rows as $row) 
             {
                 fputcsv($csvfile, $row);
             }
