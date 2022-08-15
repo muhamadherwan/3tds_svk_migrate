@@ -33,7 +33,7 @@ class MigratePmr
 
         // $result .= $this->migratePmrStudents( $input, $fullDir, $newDir );
         // $result .= $this->migratePmrSubjects( $input, $fullDir, $newDir );
-        // $result .= $this->migratePmrGrades( $input, $fullDir, $newDir );
+        $result .= $this->migratePmrGrades( $input, $fullDir, $newDir );
 
         return $result;
     }
@@ -291,18 +291,23 @@ class MigratePmr
     {
         $result = '';
 
+        // EXAMPLE GRED (NEED TO CONFORM!):
+        // A,A1,A2,B,B1,B2,C,C1,C2,D,D1,D2
+
         // set the grade rows with its subject code.
         $rows = [];
-        $gred1 = ['', 'GRED01'];
-        $gred2 = ['', 'GRED02'];
-        $gred3 = ['', 'GRED03'];
-        $gred4 = ['', 'GRED04'];
-        $gred5 = ['', 'GRED05'];
-        $gred6 = ['', 'GRED06'];
-        $gred7 = ['', 'GRED07'];
-        $gred8 = ['', 'GRED08'];
-        $gred9 = ['', 'GRED09'];
-        $gred10 = ['', 'GRED010'];
+        $gred1 = [1, 'A'];
+        $gred2 = [2, 'A1'];
+        $gred3 = [3, 'A2'];
+        $gred4 = [4, 'B'];
+        $gred5 = [5, 'B1'];
+        $gred6 = [6, 'B2'];
+        $gred7 = [7, 'C'];
+        $gred8 = [8, 'C1'];
+        $gred9 = [9, 'C2'];
+        $gred10 = [10, 'D'];
+        $gred10 = [11, 'D1'];
+        $gred10 = [12, 'D2'];
         
         array_push( $rows,
                 $gred1, $gred2, $gred3, $gred4, $gred5,
