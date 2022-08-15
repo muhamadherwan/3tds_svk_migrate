@@ -30,8 +30,8 @@ class MigratePmr
     {
         $result = '';
         $result .= $this->migratePmrGvsSchools( $input, $fullDir, $newDir );
-        $result .= $this->migratePmrStudents( $input, $fullDir, $newDir );
-        $result .= $this->migratePmrSubjects( $input, $fullDir, $newDir );
+        // $result .= $this->migratePmrStudents( $input, $fullDir, $newDir );
+        // $result .= $this->migratePmrSubjects( $input, $fullDir, $newDir );
 
         return $result;
     }
@@ -50,15 +50,16 @@ class MigratePmr
         if ( file_exists( $input ) ) {
             if (( $txtfile = fopen($input, 'r') )  !== false )
             {
+                $id = 1;
                 while ( ($data = fgetcsv($txtfile, 1000, ",")) !== false ) 
                 {
                     // convert to string
                     $str = implode(" ", $data);
 
                     // get the school code in the string:
-                    // $schoolCode = substr($str,123,7);
-                    $schoolCode = trim(substr($str,122,8));
+                    $schoolCode = trim(substr($str,123,8));
 
+                    // var_dump($schoolCode);exit;
                     // check if current row have school code.
                     // if none, continue loop, else get the required data and save in new array set.
                     if ( strlen( $schoolCode ) !== 7 ) 
@@ -66,7 +67,7 @@ class MigratePmr
                         continue;
                     } else {
                         $data2 = [];
-                        $data2['sch_ID'] = '';
+                        $data2['sch_ID'] = $id++;
                         $data2['sch_Name'] = trim(substr($str,14,54));
                         $data2['sch_PhoneNo'] = '';
                         $data2['sch_Email'] = '';
@@ -78,7 +79,8 @@ class MigratePmr
                         $rows[] = $data2;
                     }           
                 }
-            }    
+            }
+
         } else {
             $result .= "-- Fail to create {$newDir} file...". PHP_EOL; exit;
         }
