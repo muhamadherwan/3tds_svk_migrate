@@ -86,7 +86,7 @@ class Migration
         $result = $this->mkdirMigrate->start();
         
         // make migration csv files
-        $result .= $this->migrateStam->create( $this->input, $this->fullDir, $this->newDir );
+        $result .= $this->migrateStam->create( $this->input, $this->fullDir, $this->newDir, $this->db );
         return $result;
     }
 

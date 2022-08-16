@@ -26,13 +26,13 @@ class MigrateStam
      *
      * @return string result
      */
-    public function create( $input, $fullDir, $newDir )
+    public function create( $input, $fullDir, $newDir, $db )
     {
         $result = '';
-        $result .= $this->migrateStamGvsSchools( $input, $fullDir, $newDir );
-        // $result .= $this->migrateStamStudents( $input, $fullDir, $newDir );
-        $result .= $this->migrateStamSubjects( $input, $fullDir, $newDir );
-        $result .= $this->migrateStamGrades( $input, $fullDir, $newDir );
+        $result .= $this->migrateStamGvsSchools( $input, $fullDir, $newDir, $db );
+        $result .= $this->migrateStamStudents( $input, $fullDir, $newDir, $db );
+        // $result .= $this->migrateStamSubjects( $input, $fullDir, $newDir );
+        // $result .= $this->migrateStamGrades( $input, $fullDir, $newDir );
 
         return $result;
     }
@@ -42,7 +42,7 @@ class MigrateStam
      *
      * @return string result
      */
-    public function migrateStamGvsSchools( $input, $fullDir, $newDir )
+    public function migrateStamGvsSchools( $input, $fullDir, $newDir, $db )
     {
         $result = '';
         $rows = [];
@@ -72,12 +72,19 @@ class MigrateStam
                         $data2['sch_Name'] = trim(substr($str,12,60));
                         $data2['sch_PhoneNo'] = trim(substr($str,179,16));
                         $data2['sch_Email'] = '';
-                        $data2['sch_Address'] = trim(substr($str,72,60));
+                        $data2['sch_Address'] = trim(substr($str,72,91));
                         $data2['sch_Code'] = $schoolCode;
                         $data2['sch_Year'] = '';
                         $data2['sch_Status'] = '';
 
                         $rows[] = $data2;
+
+                        // save data for db
+                        $data3 = [];
+                        $data3['sch_Name'] = $data2['sch_Name'];
+                        $data3['no_pusat'] = trim(substr($str,3,6));
+                        $data3['code'] = $schoolCode;
+                        $db->storedSchool( $data3 );
                     }           
                 }
             }
@@ -118,7 +125,7 @@ class MigrateStam
      *
      * @return string result
      */
-    public function migrateStamStudents( $input, $fullDir, $newDir )
+    public function migrateStamStudents( $input, $fullDir, $newDir, $db )
     {
         $result = '';
         $rows = [];
@@ -139,12 +146,15 @@ class MigrateStam
                     // if none, continue loop, else get the required data and save in new array set.
                     if ( strlen( $schoolCode ) !== 7 ) 
                     {
+                        // get school id from db based on student no pusat
+                        $sch_id = $db->getSchoolId( trim(substr($str,3,6)) );
+
                         $data2 = [];
-                        $data2['Stu_ID'] = (int)trim( substr( $str,53,12 ));
-                        $data2['Stu_Idx'] = trim( substr( $str,6,9 ));
-                        $data2['Stu_Name'] = trim( substr( $str,16,40 ));
-                        $data2['Stu_Mykad'] = (int)trim( substr( $str,53,12 )); 
-                        $data2['Sch_ID'] = '';
+                        $data2['Stu_ID'] = (int)trim( substr( $str,52,12 ));
+                        $data2['Stu_Idx'] = trim( substr( $str,0,12 ));
+                        $data2['Stu_Name'] = trim( substr( $str,12,40 ));
+                        $data2['Stu_Mykad'] = (int)trim( substr( $str,52,12 )); 
+                        $data2['Sch_ID'] = (int)$sch_id['id'];
 
                         $rows[] = $data2;
                     } else {
@@ -156,9 +166,7 @@ class MigrateStam
             $result .= "-- Fail to create {$newDir} file...". PHP_EOL; exit;
         }
         fclose($txtfile);
-
-        var_dump($data2); exit;
-
+        
         # write Students.csv #
         $csvName = $newDir."_Students.csv";
         if ( $open = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w') !== false )
