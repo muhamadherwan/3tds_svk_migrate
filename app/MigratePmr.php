@@ -10,6 +10,7 @@ declare( strict_types = 1 );
 class MigratePmr
 {
     // props
+   
 
     /**
      * @param string
@@ -18,7 +19,7 @@ class MigratePmr
      */
     public function __construct()
     {
-        //
+
     }
 
     /**
@@ -26,13 +27,13 @@ class MigratePmr
      *
      * @return string result
      */
-    public function create( $input, $fullDir, $newDir )
+    public function create( $input, $fullDir, $newDir,  $db )
     {
         $result = '';
-        $result .= $this->migratePmrGvsSchools( $input, $fullDir, $newDir );
-        $result .= $this->migratePmrStudents( $input, $fullDir, $newDir );
-        $result .= $this->migratePmrSubjects( $input, $fullDir, $newDir );
-        $result .= $this->migratePmrGrades( $input, $fullDir, $newDir );
+        $result .= $this->migratePmrGvsSchools( $input, $fullDir, $newDir, $db );
+        $result .= $this->migratePmrStudents( $input, $fullDir, $newDir, $db );
+        // $result .= $this->migratePmrSubjects( $input, $fullDir, $newDir );
+        // $result .= $this->migratePmrGrades( $input, $fullDir, $newDir );
 
         return $result;
     }
@@ -42,7 +43,7 @@ class MigratePmr
      *
      * @return string result
      */
-    public function migratePmrGvsSchools( $input, $fullDir, $newDir )
+    public function migratePmrGvsSchools( $input, $fullDir, $newDir, $db )
     {
         $result = '';
         $rows = [];
@@ -67,6 +68,8 @@ class MigratePmr
                     {
                         continue;
                     } else {
+
+                        // prepare the array for csv
                         $data2 = [];
                         $data2['sch_ID'] = $id++;
                         $data2['sch_Name'] = trim(substr($str,14,54));
@@ -78,6 +81,13 @@ class MigratePmr
                         $data2['sch_Status'] = '';
 
                         $rows[] = $data2;
+
+                        // save data for db
+                        $data3 = [];
+                        $data3['sch_Name'] = $data2['sch_Name'];
+                        $data3['no_pusat'] = trim(substr($str,6,6));
+                        $data3['code'] = $schoolCode;
+                        $db->storedSchool( $data3 );
                     }           
                 }
             }
@@ -119,7 +129,7 @@ class MigratePmr
      *
      * @return string result
      */
-    public function migratePmrStudents( $input, $fullDir, $newDir )
+    public function migratePmrStudents( $input, $fullDir, $newDir, $db )
     {
         $result = '';
         $rows = [];
@@ -134,25 +144,30 @@ class MigratePmr
                     $str = implode(" ", $data);
 
                     // get the school code in the string:
-                    // $schoolCode = substr($str,123,7);
                     $schoolCode = trim(substr($str,122,8));
 
                     // check if current row have school code.
                     // if none, continue loop, else get the required data and save in new array set.
                     if ( strlen( $schoolCode ) !== 7 ) 
                     {
+                        // get school id from db based on student no pusat
+                        $sch_id = $db->getSchoolId( trim(substr($str,6,6)) );
+                        
+                        // prepare array for csv
                         $data2 = [];
                         $data2['Stu_ID'] = (int)trim( substr( $str,56,12 ));
                         $data2['Stu_Idx'] = trim( substr( $str,6,9 ));
                         $data2['Stu_Name'] = trim( substr( $str,16,40 ));
                         $data2['Stu_Mykad'] = (int)trim( substr( $str,56,12 )); 
-                        $data2['Sch_ID'] = '';
-
+                        $data2['Sch_ID'] = (int)$sch_id['id'];
                         $rows[] = $data2;
                     } else {
                         continue;
                     }           
                 }
+
+                // print_r($rows); exit;
+                // var_dump($rows); exit;
             }    
         } else {
             $result .= "-- Fail to create {$newDir} file...". PHP_EOL; exit;

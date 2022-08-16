@@ -17,6 +17,7 @@ require APP_PATH . "Migration.php";
 require APP_PATH . "MkdirMigrate.php";
 require APP_PATH . "MigratePmr.php";
 require APP_PATH . "MigrateStam.php";
+require $root . "Database.php";
 
 $input = INPUT_PATH . "PMR1998a.txt";
 // $input = INPUT_PATH . "STAM2004.txt";
@@ -28,7 +29,8 @@ $title = str_replace( 'migrate:', '', $cli );
 $mkdirMigrate = new MkdirMigrate( $title );
 $migratePmr = new MigratePmr();
 $migrateStam = new MigrateStam();
-$migration = new Migration( $title, $input, $mkdirMigrate, $migratePmr, $migrateStam );
+$db = new Database();
+$migration = new Migration( $title, $input, $mkdirMigrate, $migratePmr, $migrateStam, $db );
 $migration->start();
 
 

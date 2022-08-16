@@ -17,13 +17,14 @@ class Migration
     public object $migrateStam;
     public string $newDir;
     public string $fullDir;
+    public object $db;
 
     /**
      * @param mixed
      *
      * @return void
      */
-    public function __construct( string $title , string $input, MkdirMigrate $mkdirMigrate, MigratePmr $migratePmr, MigrateStam $migrateStam )
+    public function __construct( string $title , string $input, MkdirMigrate $mkdirMigrate, MigratePmr $migratePmr, MigrateStam $migrateStam, Database $db )
     {
         $this->title = $title;
         $this->input = $input;
@@ -32,6 +33,7 @@ class Migration
         $this->migrateStam = $migrateStam;
         $this->newDir = str_replace( 'migrate:', '', $title );
         $this->fullDir = OUTPUT_PATH . $this->newDir;
+        $this->db = $db;
     }
 
     /**
@@ -69,7 +71,7 @@ class Migration
         $result = $this->mkdirMigrate->start();
         
         // make migration csv files
-        $result .= $this->migratePmr->create( $this->input, $this->fullDir, $this->newDir );
+        $result .= $this->migratePmr->create( $this->input, $this->fullDir, $this->newDir, $this->db );
         return $result;
     }
 
