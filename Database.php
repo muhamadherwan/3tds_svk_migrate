@@ -58,6 +58,17 @@ class Database
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-
+    /**
+     * @param int grade
+     *
+     * @return int grade id
+     */
+    public function getGradeId( $grade )
+    {
+        $statement = $this->pdo->prepare('SELECT id FROM grades WHERE name = :grade');
+        $statement->bindValue(':grade', $grade);
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
 
 }
