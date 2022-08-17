@@ -19,8 +19,8 @@ require APP_PATH . "MigratePmr.php";
 require APP_PATH . "MigrateStam.php";
 require $root . "Database.php";
 
-$input = INPUT_PATH . "PMR1998a.txt";
-// $input = INPUT_PATH . "STAM2004.txt";
+// $input = INPUT_PATH . "PMR1998a.txt";
+$input = INPUT_PATH . "STAM2004.txt";
 
 $cli = $argv[1] ?? die( "Could not get value of command line option!\n" );
 $check = preg_match( "/\bmigrate:\b/", $cli ) ?: die( "Please enter a correct command line!\n" ); 

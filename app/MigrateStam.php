@@ -33,7 +33,7 @@ class MigrateStam
         $result .= $this->migrateStamStudents( $input, $fullDir, $newDir, $db );
         $result .= $this->migrateStamSubjects( $input, $fullDir, $newDir );
         $result .= $this->migrateStamGrades( $input, $fullDir, $newDir );
-
+        $result .= $this->migrateStamMarks( $input, $fullDir, $newDir, $db );
         return $result;
     }
 
@@ -299,5 +299,181 @@ class MigrateStam
         }
 
         return $result;
+    }
+    
+        /**
+     * @param string $input, $fullDir, $newDir 
+     *
+     * @return string result
+     */
+    public function migrateStamMarks( $input, $fullDir, $newDir, $db )
+    {
+        $result = '';
+        $rows = [];
+
+        # read .txt files #
+        if ( file_exists( $input ) ) {
+            if (( $txtfile = fopen($input, 'r') )  !== false )
+            {
+                while ( ($data = fgetcsv($txtfile, 1000, ",")) !== false ) 
+                {
+                    // convert to string
+                    $str = implode(" ", $data);
+
+                    // get the school code in the string:
+                    $schoolCode = trim(substr($str,195,7));
+
+                    if ( strlen( $schoolCode ) !== 7 ) 
+                    {
+                        // prepare the array for csv
+                
+                        // get student id from db based on student idx at data file
+                        $studentId = $db->getStudentId( trim( substr($str,0,12)) );
+
+                        // subject 1
+                        $subject1 = [];
+                        // get student id
+                        $subject1['Stu_ID'] = (int)$studentId['Stu_ID'];
+                        // get subject 1 subject id
+                        $subject1['Sub_ID'] = 1;
+                        // get subject 1 gred id
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,102,2 )) );
+                        $subject1['Grade_ID'] = (int)$gradeId['Grade_ID'];
+
+                        // subject 2
+                        $subject2 = [];
+                        // get student id
+                        $subject2['Stu_ID'] = (int)$studentId['Stu_ID'];
+                        // get subject 2 subject id
+                        $subject2['Sub_ID'] = 2;
+                        // get subject 2 gred id
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,111,2 )) );
+                        $subject2['Grade_ID'] = (int)$gradeId['Grade_ID'];
+
+                        // subject 3
+                        $subject3 = [];
+                        // get student id
+                        $subject3['Stu_ID'] = (int)$studentId['Stu_ID'];
+                        // get subject 3 subject id
+                        $subject3['Sub_ID'] = 3;
+                        // get subject 3 gred id
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,120,2 )) );
+                        $subject3['Grade_ID'] = (int)$gradeId['Grade_ID'];
+                        
+                        // subject 4
+                        $subject4 = [];
+                        // get student id
+                        $subject4['Stu_ID'] = (int)$studentId['Stu_ID'];
+                        // get subject 4 subject id
+                        $subject4['Sub_ID'] = 4;
+                        // get subject 4 gred id
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,129,2 )) );
+                        $subject4['Grade_ID'] = (int)$gradeId['Grade_ID'];
+
+                        // subject 5
+                        $subject5 = [];
+                        // get student id
+                        $subject5['Stu_ID'] = (int)$studentId['Stu_ID'];
+                        // get subject 5 subject id
+                        $subject5['Sub_ID'] = 5;
+                        // get subject 5 gred id
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,138,2 )) );
+                        $subject5['Grade_ID'] = (int)$gradeId['Grade_ID'];
+
+                        // subject 6
+                        $subject6 = [];
+                        // get student id
+                        $subject6['Stu_ID'] = (int)$studentId['Stu_ID'];
+                        // get subject 6 subject id
+                        $subject6['Sub_ID'] = 6;
+                        // get subject 6 gred id
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,147,2 )) );
+                        $subject6['Grade_ID'] = (int)$gradeId['Grade_ID'];
+
+                        // subject 7
+                        $subject7 = [];
+                        // get student id
+                        $subject7['Stu_ID'] = (int)$studentId['Stu_ID'];
+                        // get subject 7 subject id
+                        $subject7['Sub_ID'] = 7;
+                        // get subject 7 gred id
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,156,2 )) );
+                        $subject7['Grade_ID'] = (int)$gradeId['Grade_ID'];
+
+                        // subject 8
+                        $subject8 = [];
+                        // get student id
+                        $subject8['Stu_ID'] = (int)$studentId['Stu_ID'];
+                        // get subject 8 subject id
+                        $subject8['Sub_ID'] = 8;
+                        // get subject 8 gred id
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,165,2 )) );
+                        $subject8['Grade_ID'] = (int)$gradeId['Grade_ID'];
+
+                        // subject 9
+                        $subject9 = [];
+                        // get student id
+                        $subject9['Stu_ID'] = (int)$studentId['Stu_ID'];
+                        // get subject 9 subject id
+                        $subject9['Sub_ID'] = 9;
+                        // get subject 9 gred id
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,174,2 )) );
+                        $subject9['Grade_ID'] = (int)$gradeId['Grade_ID'];
+                        
+                        // subject 10
+                        $subject10 = [];
+                        // get student id
+                        $subject10['Stu_ID'] = (int)$studentId['Stu_ID'];
+                        // get subject 10 subject id
+                        $subject10['Sub_ID'] = 10;
+                        // get subject 10 gred id
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,174,2 )) );
+                        $subject10['Grade_ID'] = (int)$gradeId['Grade_ID'];
+
+                        // add all subject array to rows array                        
+                        array_push( $rows,
+                            $subject1, $subject2, $subject3, $subject4, $subject5,
+                            $subject6, $subject7, $subject8, $subject9, $subject10
+                        );
+                        
+                        print_r($rows);exit;
+                    } else {
+                        continue;
+                    }
+                }
+            }
+
+        print_r($rows);exit;
+
+        } else {
+            $result .= "-- Fail to create {$newDir} file...". PHP_EOL; exit;
+        }
+        fclose($txtfile);
+
+        # write Marks.csv #
+        $csvName = $newDir."_Marks.csv";
+        if ( $open = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w') !== false )
+        {
+            $csvfile = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w');
+
+            // write the columns
+            $columns = ["Stu_ID", "Sub_ID", "Grade_ID"];
+            fputcsv($csvfile, $columns);
+
+            // write the rows
+            foreach ($rows as $row) 
+            {
+                fputcsv($csvfile, $row);
+            }
+            fclose($csvfile);
+
+            $result .= "-- Creating Migration File: {$csvName}". PHP_EOL;
+            $result .= "-- Created Migration File: {$csvName}". PHP_EOL;
+        } else {
+            $result .= "-- Creating Migration File: {$csvName}". PHP_EOL;
+            $result .= "-- Fail Create Migration File: {$csvName}. Try again later.". PHP_EOL;
+        }
+
+        return $result;    
     }
 }   

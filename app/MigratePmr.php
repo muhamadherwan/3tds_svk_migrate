@@ -35,7 +35,6 @@ class MigratePmr
         $result .= $this->migratePmrSubjects( $input, $fullDir, $newDir );
         $result .= $this->migratePmrGrades( $input, $fullDir, $newDir );
         $result .= $this->migratePmrMarks( $input, $fullDir, $newDir, $db );
-
         return $result;
     }
 
