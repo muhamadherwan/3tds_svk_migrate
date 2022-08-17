@@ -32,8 +32,8 @@ class MigratePmr
         $result = '';
         $result .= $this->migratePmrGvsSchools( $input, $fullDir, $newDir, $db );
         $result .= $this->migratePmrStudents( $input, $fullDir, $newDir, $db );
-        // $result .= $this->migratePmrSubjects( $input, $fullDir, $newDir );
-        // $result .= $this->migratePmrGrades( $input, $fullDir, $newDir );
+        $result .= $this->migratePmrSubjects( $input, $fullDir, $newDir );
+        $result .= $this->migratePmrGrades( $input, $fullDir, $newDir );
         $result .= $this->migratePmrMarks( $input, $fullDir, $newDir, $db );
 
         return $result;
@@ -139,16 +139,15 @@ class MigratePmr
         if ( file_exists( $input ) ) {
             if (( $txtfile = fopen($input, 'r') )  !== false )
             {
+                $id = 1;
                 while ( ($data = fgetcsv($txtfile, 1000, ",")) !== false ) 
                 {
                     // convert to string
                     $str = implode(" ", $data);
 
                     // get the school code in the string:
-                    // $schoolCode = trim(substr($str,122,8));
                     $schoolCode = trim(substr($str,123,8));
                     
-
                     // check if current row have school code.
                     // if none, continue loop, else get the required data and save in new array set.
                     if ( strlen( $schoolCode ) !== 7 ) 
@@ -158,12 +157,16 @@ class MigratePmr
                         
                         // prepare array for csv
                         $data2 = [];
-                        $data2['Stu_ID'] = (int)trim( substr( $str,56,12 ));
+                        $data2['Stu_ID'] = $id++;
                         $data2['Stu_Idx'] = trim( substr( $str,6,9 ));
                         $data2['Stu_Name'] = trim( substr( $str,16,40 ));
                         $data2['Stu_Mykad'] = (int)trim( substr( $str,56,12 )); 
                         $data2['Sch_ID'] = (int)$sch_id['id'];
                         $rows[] = $data2;
+
+                        // stored array to db
+                        $db->storedStudent( $data2 );
+
                     } else {
                         continue;
                     }           
@@ -260,9 +263,6 @@ class MigratePmr
                      $subject1, $subject2, $subject3, $subject4, $subject5,
                      $subject6, $subject7, $subject8, $subject9
                 );
-
-                var_dump($rows); exit;
-
             }   
 
         } else {
@@ -382,11 +382,14 @@ class MigratePmr
                     if ( strlen( $schoolCode ) !== 7 ) 
                     {
                         // prepare the array for csv
+                        
+                        // get student id from db based on student idx
+                        $studentId = $db->getStudentId( trim(substr($str,6,9)) );
 
                         // mata 01
                         $mata01 = [];
                         // get student id
-                        $mata01['Stu_ID'] = (int)trim( substr( $str,56,12 ));
+                        $mata01['Stu_ID'] = (int)$studentId['Stu_ID'];
                         // get mata01 subject id
                         $mata01['Sub_ID'] = 1;
                         // get mata01 gred id
@@ -396,7 +399,7 @@ class MigratePmr
                         // mata 02
                         $mata02 = [];
                         // get student id
-                        $mata02['Stu_ID'] = (int)trim( substr( $str,56,12 ));
+                        $mata02['Stu_ID'] = (int)$studentId['Stu_ID'];
                         // get mata02 subject id
                         $mata02['Sub_ID'] = 2;
                         // get mata02 gred id
@@ -406,7 +409,7 @@ class MigratePmr
                         // mata 03
                         $mata03 = [];
                         // get student id
-                        $mata03['Stu_ID'] = (int)trim( substr( $str,56,12 ));
+                        $mata03['Stu_ID'] = (int)$studentId['Stu_ID'];
                         // get mata03 subject id
                         $mata03['Sub_ID'] = 3;
                         // get mata03 gred id
@@ -416,7 +419,7 @@ class MigratePmr
                         // mata 04
                         $mata04 = [];
                         // get student id
-                        $mata04['Stu_ID'] = (int)trim( substr( $str,56,12 ));
+                        $mata04['Stu_ID'] = (int)$studentId['Stu_ID'];
                         // get mata04 subject id
                         $mata04['Sub_ID'] = 4;
                         // get mata04 gred id
@@ -426,7 +429,7 @@ class MigratePmr
                         // mata 05
                         $mata05 = [];
                         // get student id
-                        $mata05['Stu_ID'] = (int)trim( substr( $str,56,12 ));
+                        $mata05['Stu_ID'] = (int)$studentId['Stu_ID'];
                         // get mata05 subject id
                         $mata05['Sub_ID'] = 5;
                         // get mata05 gred id
@@ -436,7 +439,7 @@ class MigratePmr
                         // mata 06
                         $mata06 = [];
                         // get student id
-                        $mata06['Stu_ID'] = (int)trim( substr( $str,56,12 ));
+                        $mata06['Stu_ID'] = (int)$studentId['Stu_ID'];
                         // get mata06 subject id
                         $mata06['Sub_ID'] = 6;
                         // get mata06 gred id
@@ -446,7 +449,7 @@ class MigratePmr
                         // mata 07
                         $mata07 = [];
                         // get student id
-                        $mata07['Stu_ID'] = (int)trim( substr( $str,56,12 ));
+                        $mata07['Stu_ID'] = (int)$studentId['Stu_ID'];
                         // get mata07 subject id
                         $mata07['Sub_ID'] = 7;
                         // get mata07 gred id
@@ -456,7 +459,7 @@ class MigratePmr
                         // mata 08
                         $mata08 = [];
                         // get student id
-                        $mata08['Stu_ID'] = (int)trim( substr( $str,56,12 ));
+                        $mata08['Stu_ID'] = (int)$studentId['Stu_ID'];
                         // get mata08 subject id
                         $mata08['Sub_ID'] = 8;
                         // get mata08 gred id
@@ -466,7 +469,7 @@ class MigratePmr
                         // mata 09
                         $mata09 = [];
                         // get student id
-                        $mata09['Stu_ID'] = (int)trim( substr( $str,56,12 ));
+                        $mata09['Stu_ID'] = (int)$studentId['Stu_ID'];
                         // get mata09 subject id
                         $mata09['Sub_ID'] = 9;
                         // get mata09 gred id

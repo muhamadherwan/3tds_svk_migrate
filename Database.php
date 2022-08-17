@@ -46,6 +46,37 @@ class Database
     }
 
     /**
+     * @param array student id, angka giliran, name, no mykad, school id
+     *
+     * @return boolean
+     */
+    public function storedStudent( array $student )
+     {
+        // stored in db.
+        $statement = $this->pdo->prepare("INSERT INTO students (Stu_ID, Stu_Idx, Stu_Name, Stu_Mykad, Sch_ID) 
+                                            VALUE (:Stu_ID, :Stu_Idx, :Stu_Name, :Stu_Mykad, :Sch_ID)");
+        $statement->bindValue(':Stu_ID', $student['Stu_ID'] );
+        $statement->bindValue(':Stu_Idx', $student['Stu_Idx'] );
+        $statement->bindValue(':Stu_Name', $student['Stu_Name'] );
+        $statement->bindValue(':Stu_Mykad', $student['Stu_Mykad'] );
+        $statement->bindValue(':Sch_ID', $student['Sch_ID'] );
+        $statement->execute();
+    }
+
+    /**
+     * @param int no pusat
+     *
+     * @return int id schools
+     */
+    public function getStudentId( $stu_idx )
+    {
+        $statement = $this->pdo->prepare('SELECT Stu_ID FROM students WHERE Stu_Idx = :Stu_Idx');
+        $statement->bindValue(':Stu_Idx', $stu_idx);
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
      * @param int no pusat
      *
      * @return int id schools
