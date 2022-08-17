@@ -94,12 +94,11 @@ class Database
      *
      * @return int grade id
      */
-    public function getGradeId( $grade )
+    public function getGradePmrId( $grade )
     {
-        $statement = $this->pdo->prepare('SELECT id FROM grades WHERE name = :grade');
+        $statement = $this->pdo->prepare('SELECT Grade_ID FROM grades_pmr WHERE Grade = :grade');
         $statement->bindValue(':grade', $grade);
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
-
 }

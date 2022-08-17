@@ -166,7 +166,6 @@ class MigratePmr
 
                         // stored array to db
                         $db->storedStudent( $data2 );
-
                     } else {
                         continue;
                     }           
@@ -243,8 +242,6 @@ class MigratePmr
                     } else {
                         continue;
                     } 
-
-                    var_dump($data2['sub_code1'] = trim( substr( $str,100,2 )));exit;
                 }
 
                 // set the subject rows with its subject code.
@@ -393,8 +390,8 @@ class MigratePmr
                         // get mata01 subject id
                         $mata01['Sub_ID'] = 1;
                         // get mata01 gred id
-                        $gradeId = $db->getGradeId( trim( substr( $str,102,2 )) );
-                        $mata01['Grade_ID'] = (int)$gradeId['id'];
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,102,2 )) );
+                        $mata01['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // mata 02
                         $mata02 = [];
@@ -403,8 +400,8 @@ class MigratePmr
                         // get mata02 subject id
                         $mata02['Sub_ID'] = 2;
                         // get mata02 gred id
-                        $gradeId = $db->getGradeId( trim( substr( $str,111,2 )) );
-                        $mata02['Grade_ID'] = (int)$gradeId['id'];
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,111,2 )) );
+                        $mata02['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // mata 03
                         $mata03 = [];
@@ -413,8 +410,8 @@ class MigratePmr
                         // get mata03 subject id
                         $mata03['Sub_ID'] = 3;
                         // get mata03 gred id
-                        $gradeId = $db->getGradeId( trim( substr( $str,120,2 )) );
-                        $mata03['Grade_ID'] = (int)$gradeId['id'];
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,120,2 )) );
+                        $mata03['Grade_ID'] = (int)$gradeId['Grade_ID'];
                         
                         // mata 04
                         $mata04 = [];
@@ -423,8 +420,8 @@ class MigratePmr
                         // get mata04 subject id
                         $mata04['Sub_ID'] = 4;
                         // get mata04 gred id
-                        $gradeId = $db->getGradeId( trim( substr( $str,129,2 )) );
-                        $mata04['Grade_ID'] = (int)$gradeId['id'];
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,129,2 )) );
+                        $mata04['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // mata 05
                         $mata05 = [];
@@ -433,8 +430,8 @@ class MigratePmr
                         // get mata05 subject id
                         $mata05['Sub_ID'] = 5;
                         // get mata05 gred id
-                        $gradeId = $db->getGradeId( trim( substr( $str,138,2 )) );
-                        $mata05['Grade_ID'] = (int)$gradeId['id'];
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,138,2 )) );
+                        $mata05['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // mata 06
                         $mata06 = [];
@@ -443,8 +440,8 @@ class MigratePmr
                         // get mata06 subject id
                         $mata06['Sub_ID'] = 6;
                         // get mata06 gred id
-                        $gradeId = $db->getGradeId( trim( substr( $str,147,2 )) );
-                        $mata06['Grade_ID'] = (int)$gradeId['id'];
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,147,2 )) );
+                        $mata06['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // mata 07
                         $mata07 = [];
@@ -453,8 +450,8 @@ class MigratePmr
                         // get mata07 subject id
                         $mata07['Sub_ID'] = 7;
                         // get mata07 gred id
-                        $gradeId = $db->getGradeId( trim( substr( $str,156,2 )) );
-                        $mata07['Grade_ID'] = (int)$gradeId['id'];
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,156,2 )) );
+                        $mata07['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // mata 08
                         $mata08 = [];
@@ -463,8 +460,8 @@ class MigratePmr
                         // get mata08 subject id
                         $mata08['Sub_ID'] = 8;
                         // get mata08 gred id
-                        $gradeId = $db->getGradeId( trim( substr( $str,165,2 )) );
-                        $mata08['Grade_ID'] = (int)$gradeId['id'];
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,165,2 )) );
+                        $mata08['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // mata 09
                         $mata09 = [];
@@ -473,8 +470,8 @@ class MigratePmr
                         // get mata09 subject id
                         $mata09['Sub_ID'] = 9;
                         // get mata09 gred id
-                        $gradeId = $db->getGradeId( trim( substr( $str,174,2 )) );
-                        $mata09['Grade_ID'] = (int)$gradeId['id'];
+                        $gradeId = $db->getGradePmrId( trim( substr( $str,174,2 )) );
+                        $mata09['Grade_ID'] = (int)$gradeId['Grade_ID'];
                         
                         // add all subject array to rows array                        
                         array_push( $rows,

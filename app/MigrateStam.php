@@ -31,8 +31,8 @@ class MigrateStam
         $result = '';
         $result .= $this->migrateStamGvsSchools( $input, $fullDir, $newDir, $db );
         $result .= $this->migrateStamStudents( $input, $fullDir, $newDir, $db );
-        // $result .= $this->migrateStamSubjects( $input, $fullDir, $newDir );
-        // $result .= $this->migrateStamGrades( $input, $fullDir, $newDir );
+        $result .= $this->migrateStamSubjects( $input, $fullDir, $newDir );
+        $result .= $this->migrateStamGrades( $input, $fullDir, $newDir );
 
         return $result;
     }
@@ -134,6 +134,7 @@ class MigrateStam
         if ( file_exists( $input ) ) {
             if (( $txtfile = fopen($input, 'r') )  !== false )
             {
+                $id = 1;
                 while ( ($data = fgetcsv($txtfile, 1000, ",")) !== false ) 
                 {
                     // convert to string
@@ -150,13 +151,15 @@ class MigrateStam
                         $sch_id = $db->getSchoolId( trim(substr($str,3,6)) );
 
                         $data2 = [];
-                        $data2['Stu_ID'] = (int)trim( substr( $str,52,12 ));
+                        $data2['Stu_ID'] = $id++;
                         $data2['Stu_Idx'] = trim( substr( $str,0,12 ));
                         $data2['Stu_Name'] = trim( substr( $str,12,40 ));
                         $data2['Stu_Mykad'] = (int)trim( substr( $str,52,12 )); 
                         $data2['Sch_ID'] = (int)$sch_id['id'];
-
                         $rows[] = $data2;
+
+                        // stored array to db
+                        $db->storedStudent( $data2 );
                     } else {
                         continue;
                     }           
