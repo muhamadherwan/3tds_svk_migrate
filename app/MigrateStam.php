@@ -337,8 +337,11 @@ class MigrateStam
                         // get subject 1 subject id
                         $subject1['Sub_ID'] = 1;
                         // get subject 1 gred id
-                        $gradeId = $db->getGradePmrId( trim( substr( $str,102,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,147,1 )) );
                         $subject1['Grade_ID'] = (int)$gradeId['Grade_ID'];
+
+                        // var_dump($subject1);exit;
+
 
                         // subject 2
                         $subject2 = [];
@@ -347,7 +350,7 @@ class MigrateStam
                         // get subject 2 subject id
                         $subject2['Sub_ID'] = 2;
                         // get subject 2 gred id
-                        $gradeId = $db->getGradePmrId( trim( substr( $str,111,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,172,1 )) );
                         $subject2['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // subject 3
@@ -357,7 +360,7 @@ class MigrateStam
                         // get subject 3 subject id
                         $subject3['Sub_ID'] = 3;
                         // get subject 3 gred id
-                        $gradeId = $db->getGradePmrId( trim( substr( $str,120,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,197,1 )) );
                         $subject3['Grade_ID'] = (int)$gradeId['Grade_ID'];
                         
                         // subject 4
@@ -367,7 +370,7 @@ class MigrateStam
                         // get subject 4 subject id
                         $subject4['Sub_ID'] = 4;
                         // get subject 4 gred id
-                        $gradeId = $db->getGradePmrId( trim( substr( $str,129,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,222,1 )) );
                         $subject4['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // subject 5
@@ -377,7 +380,7 @@ class MigrateStam
                         // get subject 5 subject id
                         $subject5['Sub_ID'] = 5;
                         // get subject 5 gred id
-                        $gradeId = $db->getGradePmrId( trim( substr( $str,138,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,247,1 )) );
                         $subject5['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // subject 6
@@ -387,7 +390,7 @@ class MigrateStam
                         // get subject 6 subject id
                         $subject6['Sub_ID'] = 6;
                         // get subject 6 gred id
-                        $gradeId = $db->getGradePmrId( trim( substr( $str,147,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,272,2 )) );
                         $subject6['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // subject 7
@@ -397,7 +400,7 @@ class MigrateStam
                         // get subject 7 subject id
                         $subject7['Sub_ID'] = 7;
                         // get subject 7 gred id
-                        $gradeId = $db->getGradePmrId( trim( substr( $str,156,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,297,2 )) );
                         $subject7['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // subject 8
@@ -407,7 +410,7 @@ class MigrateStam
                         // get subject 8 subject id
                         $subject8['Sub_ID'] = 8;
                         // get subject 8 gred id
-                        $gradeId = $db->getGradePmrId( trim( substr( $str,165,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,322,2 )) );
                         $subject8['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // subject 9
@@ -417,7 +420,7 @@ class MigrateStam
                         // get subject 9 subject id
                         $subject9['Sub_ID'] = 9;
                         // get subject 9 gred id
-                        $gradeId = $db->getGradePmrId( trim( substr( $str,174,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,347,2 )) );
                         $subject9['Grade_ID'] = (int)$gradeId['Grade_ID'];
                         
                         // subject 10
@@ -427,23 +430,22 @@ class MigrateStam
                         // get subject 10 subject id
                         $subject10['Sub_ID'] = 10;
                         // get subject 10 gred id
-                        $gradeId = $db->getGradePmrId( trim( substr( $str,174,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,372,2 )) );
                         $subject10['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
-                        // add all subject array to rows array                        
                         array_push( $rows,
                             $subject1, $subject2, $subject3, $subject4, $subject5,
                             $subject6, $subject7, $subject8, $subject9, $subject10
                         );
                         
-                        print_r($rows);exit;
+                        // print_r($rows);exit;
                     } else {
                         continue;
                     }
                 }
             }
 
-        print_r($rows);exit;
+        // print_r($rows);exit;
 
         } else {
             $result .= "-- Fail to create {$newDir} file...". PHP_EOL; exit;

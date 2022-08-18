@@ -101,4 +101,17 @@ class Database
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
+
+     /**
+     * @param int grade
+     *
+     * @return int grade id
+     */
+    public function getGradeStamId( $grade )
+    {
+        $statement = $this->pdo->prepare('SELECT Grade_ID FROM grades_stam WHERE Grade_Code = :grade');
+        $statement->bindValue(':grade', $grade);
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
 }
