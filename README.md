@@ -1,4 +1,4 @@
-# 3tds svk migrate
+# 3tds svk migrate version: 1.0
 ## About
 
 Script for fetch PMR or STAMP data from .txt file to .csv file for migration to svk system database.
