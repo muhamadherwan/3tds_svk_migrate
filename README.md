@@ -5,8 +5,8 @@ Script for fetch PMR or STAMP data from .txt file to .csv file for migration to 
 
 ### Built with
 
-* [![Php7[Php.net]][Php-url]
-* [![Mysql[Mysq.com][Php7-url]
+* PHP 7
+* MySql
 
 ### Installation
 
