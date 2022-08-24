@@ -17,6 +17,17 @@ CREATE TABLE schools
    PRIMARY KEY ( id )
 );
 
+# Table students
+create table students
+(
+    Stu_ID INT NOT NULL,
+    Stu_Idx VARCHAR(255) NOT NULL,
+    Stu_Name VARCHAR(255) NOT NULL,
+    Stu_Mykad VARCHAR(255) NOT NULL,
+    Sch_ID INT NOT NULL,
+    PRIMARY KEY ( Stu_ID )
+);
+
 # Table subjects for pmr.
 CREATE TABLE subjects_pmr
 (

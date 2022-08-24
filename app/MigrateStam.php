@@ -28,8 +28,7 @@ class MigrateStam
      */
     public function create( $input, $fullDir, $newDir, $db )
     {
-        $result = '';
-        $result .= $this->migrateStamGvsSchools( $input, $fullDir, $newDir, $db );
+        $result = $this->migrateStamGvsSchools($input, $fullDir, $newDir, $db);
         $result .= $this->migrateStamStudents( $input, $fullDir, $newDir, $db );
         $result .= $this->migrateStamSubjects( $input, $fullDir, $newDir );
         $result .= $this->migrateStamGrades( $input, $fullDir, $newDir );
@@ -67,16 +66,21 @@ class MigrateStam
                     {
                         continue;
                     } else {
+                        // format school full address:
+                        $address = trim(substr($str,72,60));
+                        $poscode = trim(substr($str,132,6));
+                        $city = trim(substr($str,138,20));
+                        $state = trim(substr($str,158,20));
+
                         $data2 = [];
                         $data2['sch_ID'] = $id++;
                         $data2['sch_Name'] = trim(substr($str,12,60));
                         $data2['sch_PhoneNo'] = trim(substr($str,178,16));
                         $data2['sch_Email'] = '';
-                        $data2['sch_Address'] = trim(substr($str,72,91));
+                        $data2['sch_Address'] = implode(' ', array($address, $poscode, $city, $state));
                         $data2['sch_Code'] = $schoolCode;
                         $data2['sch_Year'] = '';
                         $data2['sch_Status'] = '';
-
                         $rows[] = $data2;
 
                         // save data for db

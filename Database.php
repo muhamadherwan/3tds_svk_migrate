@@ -23,8 +23,8 @@ class Database
     public function __construct() {
 
         // connect to database
-        // $this->pdo = new PDO('mysql:host=localhost;port=3306;dbname=skv_migrate', 'herwan', '1234');
-        $this->pdo = new PDO('mysql:host=localhost;port=3306;dbname=svk_migrate', 'herwan', '1234');
+         $this->pdo = new PDO('mysql:host=localhost;port=3306;dbname=svk_migrate', 'herwan', '1234');
+//        $this->pdo = new PDO('mysql:host=localhost;port=3306;dbname=svk_migrate_staging', 'herwan', '1234');
         // if cant connect, throw error
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         // self::$db = $this;
