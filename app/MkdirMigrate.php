@@ -68,8 +68,7 @@ class MkdirMigrate
      */
     public function reCreate()
     {
-        $result = '';
-        $result .= "-- Migration Directory: {$this->newDir} already exist." . PHP_EOL;
+        $result = "-- Migration Directory: {$this->newDir} already exist." . PHP_EOL;
         $result .= $this->destroy(); // delete the dir
         return $result .= $this->create(); // // create new dir with writeable permission (chmod 0777).
     }
