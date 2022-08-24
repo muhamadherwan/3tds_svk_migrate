@@ -34,7 +34,7 @@ class MkdirMigrate
     public function start()
     {
         // if the dir is not exist, create it. Else delete the dir and its content, then recreate the dir.
-        return $result = ( !is_dir( $this->fullDir ) ) ? $this->create() : $this->reCreate(); 
+        return $result = ( !is_dir( $this->fullDir ) ) ? $this->create() : $this->reCreate();
     }
 
     /**
@@ -45,7 +45,7 @@ class MkdirMigrate
     public function create(): string
     {
         $result = '';
-    
+
         if ( !is_dir( $this->fullDir ) )
         {
             // create new dir with writeable permission (chmod 0777).

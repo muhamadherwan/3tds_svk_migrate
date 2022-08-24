@@ -68,10 +68,10 @@ class Migration
     public function startPmr(): string
     {
         // make migration dir
-        $result = $this->mkdirMigrate->start();
+        $result = $this->mkdirMigrate->start( $this->db );
         
         // make migration csv files
-        $result .= $this->migratePmr->create( $this->input, $this->fullDir, $this->newDir, $this->db );
+        // $result .= $this->migratePmr->create( $this->input, $this->fullDir, $this->newDir, $this->db );
         return $result;
     }
 

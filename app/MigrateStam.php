@@ -58,19 +58,19 @@ class MigrateStam
                     $str = implode(" ", $data);
 
                     // get the school code in the string:
-                    $schoolCode = trim(substr($str,195,7));
+                    $schoolCode = trim(substr($str,195,10));
                     // var_dump($schoolCode);exit;
 
                     // check if current row have school code.
                     // if none, continue loop, else get the required data and save in new array set.
-                    if ( strlen( $schoolCode ) !== 7 ) 
+                    if ( strlen( $schoolCode ) !== 10 )
                     {
                         continue;
                     } else {
                         $data2 = [];
                         $data2['sch_ID'] = $id++;
                         $data2['sch_Name'] = trim(substr($str,12,60));
-                        $data2['sch_PhoneNo'] = trim(substr($str,179,16));
+                        $data2['sch_PhoneNo'] = trim(substr($str,178,16));
                         $data2['sch_Email'] = '';
                         $data2['sch_Address'] = trim(substr($str,72,91));
                         $data2['sch_Code'] = $schoolCode;
@@ -141,11 +141,13 @@ class MigrateStam
                     $str = implode(" ", $data);
 
                     // get the school code in the string:
-                    $schoolCode = trim(substr($str,196,7));
+//                    $schoolCode = trim(substr($str,196,10));
+
+                    $schoolCode = trim(substr($str,195,10));
 
                     // check if current row have school code.
                     // if none, continue loop, else get the required data and save in new array set.
-                    if ( strlen( $schoolCode ) !== 7 ) 
+                    if ( strlen( $schoolCode ) !== 10 )
                     {
                         // get school id from db based on student no pusat
                         $sch_id = $db->getSchoolId( trim(substr($str,3,6)) );
@@ -154,7 +156,9 @@ class MigrateStam
                         $data2['Stu_ID'] = $id++;
                         $data2['Stu_Idx'] = trim( substr( $str,0,12 ));
                         $data2['Stu_Name'] = trim( substr( $str,12,40 ));
-                        $data2['Stu_Mykad'] = (int)trim( substr( $str,52,12 )); 
+//                        $data2['Stu_Mykad'] = (int)trim( substr( $str,92,12 ));
+                        $data2['Stu_Mykad'] = trim( substr( $str,92,12 ));
+
                         $data2['Sch_ID'] = (int)$sch_id['id'];
                         $rows[] = $data2;
 
@@ -183,6 +187,7 @@ class MigrateStam
             // write the rows
             foreach ($rows as $row) 
             {
+//                $row['Stu_Mykad'] = "=\"$row[Stu_Mykad]\"";
                 fputcsv($csvfile, $row);
             }
             fclose($csvfile);
@@ -337,7 +342,7 @@ class MigrateStam
                         // get subject 1 subject id
                         $subject1['Sub_ID'] = 1;
                         // get subject 1 gred id
-                        $gradeId = $db->getGradeStamId( trim( substr( $str,147,1 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,187,1 )) );
                         $subject1['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // var_dump($subject1);exit;
@@ -350,7 +355,7 @@ class MigrateStam
                         // get subject 2 subject id
                         $subject2['Sub_ID'] = 2;
                         // get subject 2 gred id
-                        $gradeId = $db->getGradeStamId( trim( substr( $str,172,1 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,212,1 )) );
                         $subject2['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // subject 3
@@ -360,7 +365,7 @@ class MigrateStam
                         // get subject 3 subject id
                         $subject3['Sub_ID'] = 3;
                         // get subject 3 gred id
-                        $gradeId = $db->getGradeStamId( trim( substr( $str,197,1 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,237,1 )) );
                         $subject3['Grade_ID'] = (int)$gradeId['Grade_ID'];
                         
                         // subject 4
@@ -370,7 +375,7 @@ class MigrateStam
                         // get subject 4 subject id
                         $subject4['Sub_ID'] = 4;
                         // get subject 4 gred id
-                        $gradeId = $db->getGradeStamId( trim( substr( $str,222,1 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,262,1 )) );
                         $subject4['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // subject 5
@@ -380,7 +385,7 @@ class MigrateStam
                         // get subject 5 subject id
                         $subject5['Sub_ID'] = 5;
                         // get subject 5 gred id
-                        $gradeId = $db->getGradeStamId( trim( substr( $str,247,1 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,287,1 )) );
                         $subject5['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // subject 6
@@ -390,7 +395,7 @@ class MigrateStam
                         // get subject 6 subject id
                         $subject6['Sub_ID'] = 6;
                         // get subject 6 gred id
-                        $gradeId = $db->getGradeStamId( trim( substr( $str,272,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,312,2 )) );
                         $subject6['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // subject 7
@@ -400,7 +405,7 @@ class MigrateStam
                         // get subject 7 subject id
                         $subject7['Sub_ID'] = 7;
                         // get subject 7 gred id
-                        $gradeId = $db->getGradeStamId( trim( substr( $str,297,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,337,2 )) );
                         $subject7['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // subject 8
@@ -410,7 +415,7 @@ class MigrateStam
                         // get subject 8 subject id
                         $subject8['Sub_ID'] = 8;
                         // get subject 8 gred id
-                        $gradeId = $db->getGradeStamId( trim( substr( $str,322,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,362,2 )) );
                         $subject8['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         // subject 9
@@ -420,7 +425,7 @@ class MigrateStam
                         // get subject 9 subject id
                         $subject9['Sub_ID'] = 9;
                         // get subject 9 gred id
-                        $gradeId = $db->getGradeStamId( trim( substr( $str,347,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,387,2 )) );
                         $subject9['Grade_ID'] = (int)$gradeId['Grade_ID'];
                         
                         // subject 10
@@ -430,7 +435,7 @@ class MigrateStam
                         // get subject 10 subject id
                         $subject10['Sub_ID'] = 10;
                         // get subject 10 gred id
-                        $gradeId = $db->getGradeStamId( trim( substr( $str,372,2 )) );
+                        $gradeId = $db->getGradeStamId( trim( substr( $str,412,2 )) );
                         $subject10['Grade_ID'] = (int)$gradeId['Grade_ID'];
 
                         array_push( $rows,

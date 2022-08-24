@@ -13,7 +13,7 @@ class Database
     // props
     // public \PDO $pdo;
     public $pdo;
-    public static Database $db;
+    // public static Database $db;
 
     /**
      * @param string
@@ -23,10 +23,11 @@ class Database
     public function __construct() {
 
         // connect to database
-        $this->pdo = new PDO('mysql:host=localhost;port=3306;dbname=skv_migrate', 'herwan', '1234');
+        // $this->pdo = new PDO('mysql:host=localhost;port=3306;dbname=skv_migrate', 'herwan', '1234');
+        $this->pdo = new PDO('mysql:host=localhost;port=3306;dbname=svk_migrate', 'herwan', '1234');
         // if cant connect, throw error
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        self::$db = $this;
+        // self::$db = $this;
         
     }
 
@@ -102,7 +103,7 @@ class Database
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-     /**
+    /**
      * @param int grade
      *
      * @return int grade id
@@ -113,5 +114,70 @@ class Database
         $statement->bindValue(':grade', $grade);
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param string file title
+     *
+     * @return string result message
+     */
+    public function createDb( string $newDir )
+    {
+
+        $file = 'db.sql';
+        
+        $mysqlnd = function_exists('mysqli_fetch_all');
+	
+	    if ($mysqlnd && version_compare(PHP_VERSION, '5.3.0') >= 0) 
+	    {
+            $statement = file_get_contents($file);
+            $statement->execute();
+
+            return TRUE;
+		
+	    }
+					
+	    return FALSE;
+
+        // $dsn = "mysql:dbname=$database;host=$db_hostname";
+            // $db = new PDO($dsn, $db_username, $db_password);
+            // $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, 0);
+            // $sql = file_get_contents($file);
+            // $db->exec($sql);
+
+        // check if database is exist.
+        // if exist, drop the db and its tables, then create new db with all the tables;
+        // else create new db with all the tables.
+
+        /*
+          $dbh->exec("CREATE DATABASE `$db`;
+                CREATE USER '$user'@'localhost' IDENTIFIED BY '$pass';
+                GRANT ALL ON `$db`.* TO '$user'@'localhost';
+                FLUSH PRIVILEGES;")
+        or die(print_r($dbh->errorInfo(), true));
+
+        */
+
+        // try {
+
+        //     $statement = $this->pdo->prepare('CREATE DATABASE IF NOT EXISTS :dbName');
+        //     $statement->bindValue(':dbName', $dbName);
+        //     $statement->execute();
+
+            
+        //     $sql = "CREATE DATABASE myDBPDO";
+        //     // use exec() because no results are returned
+        //     $conn->exec($sql);
+        //     echo "Database created successfully<br>";
+        //   } catch(PDOException $e) {
+        //     echo $sql . "<br>" . $e->getMessage();
+        //   }
+
+
+
+        // $result = "-- Creating Migration Database: {$newDir}". PHP_EOL;
+
+        // return $result;
+
     }
 }
