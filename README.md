@@ -23,7 +23,7 @@ Script for fetch PMR or STAMP data from .txt file to .csv file for migration to 
   * PMR_1998_gvs_schools.csv
   * PMR_1998_Students.csv
   * PMR_1998_Subjects.csv
-  * PMR_1998_Grades.csv"
+  * PMR_1998_Grades.csv
   * PMR_1998_Marks.csv
 * Inside the skv_migrate database table schools should have been populated with students data.
 
