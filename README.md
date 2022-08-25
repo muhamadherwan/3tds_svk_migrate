@@ -36,9 +36,9 @@ Script for fetch PMR or STAMP data from .txt file to .csv file for migration to 
 * 4, 104, TAFSIR DAN ULUMUHU
 * 5, 105, HADITH DAN MUSTOLAH
 * 6, 106, NAHU DAN SARF
-* 7, 107, INSYA' DAN MUTALAAH;
+* 7, 107, INSYA' DAN MUTALAAH
 * 8, 108, ADAB DAN NUSUS
-* 9, 109, \ARUDH DAN QAFIYAH;
+* 9, 109, \ARUDH DAN QAFIYAH
 * 10, 110, BALAGHAH
 
 #### STAM Grades:
