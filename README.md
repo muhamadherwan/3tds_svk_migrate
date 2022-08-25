@@ -1,5 +1,5 @@
 # 3tds svk migrate
-## About
+### About
 
 Script for fetch PMR or STAMP data from .txt file to .csv file for migration to svk system database.
 
@@ -29,7 +29,7 @@ Script for fetch PMR or STAMP data from .txt file to .csv file for migration to 
 
 ### References.
 
-## STAM Subjects:
+#### STAM Subjects:
 * 1, 101, HIFZ AL-QURAN DAN TAJWID
 * 2, 102, FIQH
 * 3, 103, TAUHID DAN MANTIQ
@@ -41,7 +41,7 @@ Script for fetch PMR or STAMP data from .txt file to .csv file for migration to 
 * 9, 109, \ARUDH DAN QAFIYAH;
 * 10, 110, BALAGHAH
 
-## STAM Grades:
+#### STAM Grades:
 * 1, 1, MUMTAZ
 * 2, 2, JAYYID JIDDAN
 * 3, 3, JAYYID
@@ -49,7 +49,7 @@ Script for fetch PMR or STAMP data from .txt file to .csv file for migration to 
 * 5, 5, RASIB
 * 6, T, TIDAK HADIR
 
-## PMR Subjects:
+#### PMR Subjects:
 * 1, 02,MATA01
 * 2,12,MATA02
 * 3,21,MATA03
@@ -60,7 +60,7 @@ Script for fetch PMR or STAMP data from .txt file to .csv file for migration to 
 * 8,55,MATA08
 * 9,76,MATA09
 
-## PMR Grades:
+#### PMR Grades:
 * 1,A
 * 2,A1
 * 3,A2
@@ -75,4 +75,4 @@ Script for fetch PMR or STAMP data from .txt file to .csv file for migration to 
 * 12,D2
 
 ### Migration Logs:
-* 25 AUG 2002: STAM 2020. Shcoold id start at 30001.
+* 25 AUG 2002: STAM 2020. School id start at 30001.
