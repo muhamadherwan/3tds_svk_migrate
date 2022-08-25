@@ -10,7 +10,7 @@ USE svk_migrate;
 # Table schools.
 CREATE TABLE schools
 (
-   id INT NOT NULL AUTO_INCREMENT,
+   id INT NOT NULL,
    name VARCHAR(255) NOT NULL,
    no_pusat VARCHAR(20) NOT NULL,
    code VARCHAR(20) NOT NULL,

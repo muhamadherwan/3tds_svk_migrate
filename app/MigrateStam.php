@@ -10,6 +10,7 @@ declare( strict_types = 1 );
 class MigrateStam
 {
     // props
+    public int $schoolId;
 
     /**
      * @param string
@@ -18,7 +19,7 @@ class MigrateStam
      */
     public function __construct()
     {
-        //
+        $this->schoolId = 30001;
     }
 
     /**
@@ -50,7 +51,6 @@ class MigrateStam
         if ( file_exists( $input ) ) {
             if (( $txtfile = fopen($input, 'r') )  !== false )
             {
-                $id = 1;
                 while ( ($data = fgetcsv($txtfile, 1000, ",")) !== false ) 
                 {
                     // convert to string
@@ -58,7 +58,6 @@ class MigrateStam
 
                     // get the school code in the string:
                     $schoolCode = trim(substr($str,195,10));
-                    // var_dump($schoolCode);exit;
 
                     // check if current row have school code.
                     // if none, continue loop, else get the required data and save in new array set.
@@ -68,16 +67,16 @@ class MigrateStam
                     } else {
                         // format school full address:
                         $address = trim(substr($str,72,60));
-                        $poscode = trim(substr($str,132,6));
+                        $postcode = trim(substr($str,132,6));
                         $city = trim(substr($str,138,20));
                         $state = trim(substr($str,158,20));
 
                         $data2 = [];
-                        $data2['sch_ID'] = $id++;
+                        $data2['sch_ID'] = $this->schoolId++;
                         $data2['sch_Name'] = trim(substr($str,12,60));
                         $data2['sch_PhoneNo'] = trim(substr($str,178,16));
                         $data2['sch_Email'] = '';
-                        $data2['sch_Address'] = implode(' ', array($address, $poscode, $city, $state));
+                        $data2['sch_Address'] = implode(' ', array($address, $postcode, $city, $state));
                         $data2['sch_Code'] = $schoolCode;
                         $data2['sch_Year'] = '';
                         $data2['sch_Status'] = '';
@@ -85,6 +84,7 @@ class MigrateStam
 
                         // save data for db
                         $data3 = [];
+                        $data3['sch_ID'] = $data2['sch_ID'];
                         $data3['sch_Name'] = $data2['sch_Name'];
                         $data3['no_pusat'] = trim(substr($str,3,6));
                         $data3['code'] = $schoolCode;
@@ -145,8 +145,6 @@ class MigrateStam
                     $str = implode(" ", $data);
 
                     // get the school code in the string:
-//                    $schoolCode = trim(substr($str,196,10));
-
                     $schoolCode = trim(substr($str,195,10));
 
                     // check if current row have school code.
@@ -160,9 +158,7 @@ class MigrateStam
                         $data2['Stu_ID'] = $id++;
                         $data2['Stu_Idx'] = trim( substr( $str,0,12 ));
                         $data2['Stu_Name'] = trim( substr( $str,12,40 ));
-//                        $data2['Stu_Mykad'] = (int)trim( substr( $str,92,12 ));
                         $data2['Stu_Mykad'] = trim( substr( $str,92,12 ));
-
                         $data2['Sch_ID'] = (int)$sch_id['id'];
                         $rows[] = $data2;
 
@@ -191,7 +187,8 @@ class MigrateStam
             // write the rows
             foreach ($rows as $row) 
             {
-//                $row['Stu_Mykad'] = "=\"$row[Stu_Mykad]\"";
+                // code if want to display leading 0 in csv file
+                // $row['Stu_Mykad'] = "=\"$row[Stu_Mykad]\"";
                 fputcsv($csvfile, $row);
             }
             fclose($csvfile);
@@ -269,28 +266,28 @@ class MigrateStam
     {
         $result = '';
 
-       // set the grade rows with its subject code.
+       // set the grade rows with grade code.
        $rows = [];
-       $subject1 = [1, '1', 'MUMTAZ'];
-       $subject2 = [2, '2', 'JAYYID JIDDAN'];
-       $subject3 = [3, '3', 'JAYYID'];
-       $subject4 = [4, '4', 'MAQBUL'];
-       $subject5 = [5, '5', 'RASIB'];
-       $subject6 = [6, 'T', 'TIDAK HADIR'];
+       $grade1 = [1, '1'];
+       $grade2 = [2, '2'];
+       $grade3 = [3, '3'];
+       $grade4 = [4, '4'];
+       $grade5 = [5, '5'];
+       $grade6 = [6, 'T'];
 
-       array_push( $rows,
-            $subject1, $subject2, $subject3,
-            $subject4, $subject5, $subject6 
-       );
+        array_push( $rows,
+            $grade1, $grade2, $grade3,
+            $grade4, $grade5, $grade6
+        );
 
-        # write Subjects.csv #
+        # write Grades.csv #
         $csvName = $newDir."_Grades.csv";
         if ( $open = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w') !== false )
         {
             $csvfile = fopen($fullDir. DIRECTORY_SEPARATOR . $csvName, 'w');
 
             // write the columns
-            $columns = ["Sub_ID", "Sub_Code", "Sub_Name"];
+            $columns = ["Grade_ID", "Grade"];
             fputcsv($csvfile, $columns);
             
             // write the rows
@@ -310,7 +307,7 @@ class MigrateStam
         return $result;
     }
     
-        /**
+     /**
      * @param string $input, $fullDir, $newDir 
      *
      * @return string result

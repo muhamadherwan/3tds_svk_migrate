@@ -39,7 +39,8 @@ class Database
     public function storedSchool( array $school )
      {
         // stored in db.
-        $statement = $this->pdo->prepare("INSERT INTO schools (name, no_pusat, code) VALUE (:name, :no_pusat, :code)");
+        $statement = $this->pdo->prepare("INSERT INTO schools (id, name, no_pusat, code) VALUE (:id, :name, :no_pusat, :code)");
+        $statement->bindValue(':id', $school['sch_ID'] );
         $statement->bindValue(':name', $school['sch_Name'] );
         $statement->bindValue(':no_pusat', $school['no_pusat'] );
         $statement->bindValue(':code', $school['code']) ;
