@@ -28,16 +28,15 @@ class Database
         // if cant connect, throw error
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         // self::$db = $this;
-        
     }
 
     /**
-     * @param array school name, no pusat, school code
      *
      * @return boolean
      */
     public function storedSchool( array $school )
      {
+//         print_r($school);exit;
         // stored in db.
         $statement = $this->pdo->prepare("INSERT INTO schools (id, name, no_pusat, code) VALUE (:id, :name, :no_pusat, :code)");
         $statement->bindValue(':id', $school['sch_ID'] );
@@ -83,15 +82,24 @@ class Database
      *
      * @return int id schools
      */
-    public function getSchoolId( $no_pusat )
+    public function getSchoolId( $code )
     {
-        $statement = $this->pdo->prepare('SELECT id FROM schools WHERE no_pusat = :no_pusat');
-        $statement->bindValue(':no_pusat', $no_pusat);
+        $statement = $this->pdo->prepare('SELECT id FROM schools WHERE code = :code');
+        $statement->bindValue(':code', $code);
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getPmrSubjectId( $code )
+    {
+        $statement = $this->pdo->prepare('SELECT Sub_ID FROM subjects_pmr WHERE Sub_Code = :code');
+        $statement->bindValue(':code', $code);
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     /**
+        print $resultl;die;
      * @param int grade
      *
      * @return int grade id
@@ -113,6 +121,20 @@ class Database
     {
         $statement = $this->pdo->prepare('SELECT Grade_ID FROM grades_stam WHERE Grade_Code = :grade');
         $statement->bindValue(':grade', $grade);
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getSchoollastId()
+    {
+        $statement = $this->pdo->prepare('SELECT id FROM schools ORDER BY id DESC LIMIT 1');
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getStudentlastId()
+    {
+        $statement = $this->pdo->prepare('SELECT Stu_ID FROM students ORDER BY Stu_ID DESC LIMIT 1');
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
     }

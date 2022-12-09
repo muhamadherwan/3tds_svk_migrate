@@ -42,12 +42,12 @@ class Migration
      * @return string
      */
     public function start()
-    { 
-
+    {
         switch ( substr( $this->title, 0, 3 ) )
         {
             case 'PMR':
                 $result = $this->startPmr();
+                $result .= "Completed Migration Process!\n";
                 break;
             case 'STA':
                 $result = $this->startStam();
@@ -71,7 +71,7 @@ class Migration
         $result = $this->mkdirMigrate->start( $this->db );
         
         // make migration csv files
-        // $result .= $this->migratePmr->create( $this->input, $this->fullDir, $this->newDir, $this->db );
+        $result .= $this->migratePmr->create( $this->input, $this->fullDir, $this->newDir, $this->db );
         return $result;
     }
 
