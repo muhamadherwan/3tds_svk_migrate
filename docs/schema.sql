@@ -39,16 +39,25 @@ CREATE TABLE subjects_pmr
 
 # Table subject_pmr values.
 INSERT INTO subjects_pmr (Sub_Code, Sub_Name) 
-VALUE 
-('02','MATA01'),
-('12','MATA02'),
-('21','MATA03'),
-('23','MATA04'),
-('31','MATA05'),
-('45','MATA06'),
-('50','MATA07'),
-('55','MATA08'),
-('76','MATA09');
+VALUE
+('02','BAHASA MELAYU'),
+('12','BAHASA INGGERIS'),
+('21','SEJARAH'),
+('23','GEOGRAFI'),
+('31','BAHASA ARAB'),
+('32','BAHASA CINA'),
+('33','BAHASA TAMIL'),
+('34','BAHASA PUNJABI'),
+('37','BAHASA IBAN'),
+('38','BAHASA KADAZANDUSUN'),
+('45','PENDIDIKAN ISLAM'),
+('50','MATHEMATICS'),
+('55','SCIENCE'),
+('60','PENDIDIKAN KESENIAN'),
+('76','KHB KEMAHIRAN TEKNIKAL'),
+('77','KHB EKONOMI RUMAH TANGGA'),
+('78','KHB PERTANIAN'),
+('79','KHB PERDAGANGAN DAN KEUSAHAWANAN');
 
 # Table grades for pmr.
 CREATE TABLE grades_pmr(
@@ -60,17 +69,11 @@ CREATE TABLE grades_pmr(
 # Table grades_pmr values.
 INSERT INTO grades_pmr (Grade) VALUE
 ('A'),
-('A1'),
-('A2'),
 ('B'),
-('B1'),
-('B2'),
 ('C'),
-('C1'),
-('C2'),
 ('D'),
-('D1'),
-('D2');
+('E'),
+('T');
 
 # Table subjects for stam.
 CREATE TABLE subjects_stam
